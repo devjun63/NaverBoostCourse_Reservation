@@ -15,4 +15,13 @@ public class MainPageDaoSqls {
 			"join display_info DI on (P.id = DI.product_id)\r\n" + 
 			"join file_info FI on (PI.file_id = FI.id)\r\n" + 
 			"where PI.type = 'th' and P.category_id = :categoryId group by P.id limit :start, :limit";
+	
+	public static final String SELECT_ALL_PRODUCT_API_DATA_AS_STARTING_NUMBER =
+			"select DI.id as displayInfoId, DI.place_name as placeName, P.content as productContent, P.description as productDescription, P.id as productId, FI.save_file_name as productImageUrl\r\n" + 
+			"			from product P\r\n" + 
+			"			join product P2 on (P.category_id = P2.category_id)\r\n" + 
+			"			join product_image PI on (P.id = PI.product_id)\r\n" + 
+			"			join display_info DI on (P.id = DI.product_id)\r\n" + 
+			"			join file_info FI on (PI.file_id = FI.id)\r\n" + 
+			"			where PI.type = 'th' group by P.id limit :start, :limit";
 }

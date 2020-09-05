@@ -9,8 +9,9 @@ import kr.or.connect.reservation.dto.Promotion_api;
 public interface MainPageService {
 	public static final Integer LIMIT = 4;
 	public int getProductsCountFromAllCategorys();
-	public int getNumberOfProductsCountFromCategory(Integer category_id);
+	public int getNumberOfProductsCountFromCategory(Integer categoryId);
 	public List<Promotion_api> getPromotionList();
 	public List<Category_api> getCategoryList();
-	public List<Product_api> getProductList(Integer category_id, Integer start);
+	public List<Product_api> getAllProductList(Integer start);
+	public List<Product_api> getProductList(Integer categoryId, Integer start);
 }

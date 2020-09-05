@@ -46,6 +46,13 @@ public class MainPageDao {
 				.usingGeneratedKeyColumns("id");
 	}
 
+	public List<Product_api> selectallProductApiDatas(Integer start, Integer limit) {
+		Map<String, Integer> params = new HashMap<>();
+		params.put("start", start);
+		params.put("limit", limit);
+		return jdbc.query(SELECT_ALL_PRODUCT_API_DATA_AS_STARTING_NUMBER, params, Product_Api_rowMapper);
+	}
+	
 	public List<Product_api> selectProductApiDatas(Integer categoryId, Integer start, Integer limit) {
 		Map<String, Integer> params = new HashMap<>();
 		params.put("categoryId", categoryId);

@@ -26,8 +26,8 @@ public class MainPageServiceImpl implements MainPageService {
 	}
 
 	@Override
-	public int getNumberOfProductsCountFromCategory(Integer category_id) {
-		int productsCount = reservationMainPageDao.selectProductsTotalCountFromCategory(category_id);
+	public int getNumberOfProductsCountFromCategory(Integer categoryId) {
+		int productsCount = reservationMainPageDao.selectProductsTotalCountFromCategory(categoryId);
 		return productsCount;
 	}
 	
@@ -44,8 +44,17 @@ public class MainPageServiceImpl implements MainPageService {
 	}
 	
 	@Override
-	public List<Product_api> getProductList(Integer category_id, Integer start) {
-		List<Product_api> product_api_datas = reservationMainPageDao.selectProductApiDatas(category_id, start, MainPageService.LIMIT);
+	public List<Product_api> getAllProductList(Integer start) {
+		List<Product_api> product_api_datas = reservationMainPageDao.selectallProductApiDatas(start, MainPageService.LIMIT);
 		return product_api_datas;
 	}
+	
+	@Override
+	public List<Product_api> getProductList(Integer categoryId, Integer start) {
+		List<Product_api> product_api_datas = reservationMainPageDao.selectProductApiDatas(categoryId, start, MainPageService.LIMIT);
+		return product_api_datas;
+	}
+
+	
+	
 }
