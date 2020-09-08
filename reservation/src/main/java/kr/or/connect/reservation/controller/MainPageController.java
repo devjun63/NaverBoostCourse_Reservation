@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.or.connect.reservation.dto.Category_api;
-import kr.or.connect.reservation.dto.Product_api;
-import kr.or.connect.reservation.dto.Promotion_api;
+import kr.or.connect.reservation.dto.Category;
+import kr.or.connect.reservation.dto.Product;
+import kr.or.connect.reservation.dto.Promotion;
 import kr.or.connect.reservation.service.MainPageService;
 
 
@@ -44,7 +44,7 @@ public class MainPageController {
 	public String mainPage(@RequestParam(name="categoryId", required=false, defaultValue="0") int categoryId,
 			@RequestParam(name="start", required=false, defaultValue="0") int start, ModelMap model){
 		int totalCount = 0;
-		List<Product_api> product_list = null;
+		List<Product> product_list = null;
 		if(categoryId == 0)
 		{
 			totalCount = mainpageService.getProductsCountFromAllCategorys();
@@ -55,8 +55,8 @@ public class MainPageController {
 			product_list = mainpageService.getProductList(categoryId, start);
 		}
 		
-		List<Category_api> category_list = mainpageService.getCategoryList();
-		List<Promotion_api> promotion_list = mainpageService.getPromotionList();
+		List<Category> category_list = mainpageService.getCategoryList();
+		List<Promotion> promotion_list = mainpageService.getPromotionList();
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("totalProductCount", totalCount);
@@ -64,7 +64,7 @@ public class MainPageController {
 		map.put("category_list", category_list);
 		map.put("promotion_list", promotion_list);
 		model.addAllAttributes(map);
-		return "mainTestPage";
+		return "mainPage";
 	}
 	
 	@GetMapping(path="/maincontents", produces = "application/json; charset=utf-8")
@@ -76,8 +76,8 @@ public class MainPageController {
 		System.out.println("카테고리 아이디 : "+categoryId);
 		System.out.println("시작 숫자 : "+start);
 		int totalCount = 0;
-		List<Product_api> product_list = null;
-		List<Product_api> check_product_list = null;
+		List<Product> product_list = null;
+		List<Product> check_product_list = null;
 		if(categoryId == 0)
 		{
 			totalCount = mainpageService.getProductsCountFromAllCategorys();
@@ -89,7 +89,7 @@ public class MainPageController {
 			product_list = mainpageService.getProductList(categoryId, start);
 			check_product_list = mainpageService.getProductList(categoryId, start + 4);
 		}
-		List<Category_api> category_list = mainpageService.getCategoryList();
+		List<Category> category_list = mainpageService.getCategoryList();
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("categoryId", categoryId);

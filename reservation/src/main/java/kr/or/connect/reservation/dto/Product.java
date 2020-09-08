@@ -1,90 +1,69 @@
 package kr.or.connect.reservation.dto;
 
-import java.util.Date;
-
 public class Product {
-	private int id;					// 상품 id - PK
-	private int category_id;        // 카테고리 id - FK - References category (id)
-	private String description;     // 상품 간단 설명
-	private String content;         // 상품 상세 설명
-	private String event;           // 이벤트 정보
-	private Date create_date;       // 생성 시간
-	private Date modify_date;       // 수정 시간
+	// description: 상품 (Product) 모델
+	
+	private int displayInfoId;              // 전시 (display_info) Id
+	private String placeName;               // 전시 장소 명
+	private String productContent;          // 상품 상세 설명
+	private String productDescription;		// 상품 설명
+	private int productId;                  // 상품 (product) Id
+	private String productImageUrl;         // 상품 썸네일 이미지 URL
 	
 	public Product() {}
-
-	public Product(int id, int category_id, String description, String content, String event, Date create_date,
-			Date modify_date) {
-		this.id = id;
-		this.category_id = category_id;
-		this.description = description;
-		this.content = content;
-		this.event = event;
-		this.create_date = create_date;
-		this.modify_date = modify_date;
+	
+	public Product(int displayInfoId, String placeName, String productContent, String productDescription,
+			int productId, String productImageUrl) {
+		this.displayInfoId = displayInfoId;
+		this.placeName = placeName;
+		this.productContent = productContent;
+		this.productDescription = productDescription;
+		this.productId = productId;
+		this.productImageUrl = productImageUrl;
 	}
-
-	public int getId() {
-		return id;
+	
+	public int getDisplayInfoId() {
+		return displayInfoId;
 	}
-
-	public void setId(int id) {
-		this.id = id;
+	public void setDisplayInfoId(int displayInfoId) {
+		this.displayInfoId = displayInfoId;
 	}
-
-	public int getCategory_id() {
-		return category_id;
+	public String getPlaceName() {
+		return placeName;
 	}
-
-	public void setCategory_id(int category_id) {
-		this.category_id = category_id;
+	public void setPlaceName(String placeName) {
+		this.placeName = placeName;
 	}
-
-	public String getDescription() {
-		return description;
+	public String getProductContent() {
+		return productContent;
 	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public void setProductContent(String productContent) {
+		this.productContent = productContent;
 	}
-
-	public String getContent() {
-		return content;
+	public String getProductDescription() {
+		return productDescription;
 	}
-
-	public void setContent(String content) {
-		this.content = content;
+	public void setProductDescription(String productDescription) {
+		this.productDescription = productDescription;
 	}
-
-	public String getEvent() {
-		return event;
+	public int getProductId() {
+		return productId;
 	}
-
-	public void setEvent(String event) {
-		this.event = event;
+	public void setProductId(int productId) {
+		this.productId = productId;
 	}
-
-	public Date getCreate_date() {
-		return create_date;
+	public String getProductImageUrl() {
+		return productImageUrl;
 	}
-
-	public void setCreate_date(Date create_date) {
-		this.create_date = create_date;
-	}
-
-	public Date getModify_date() {
-		return modify_date;
-	}
-
-	public void setModify_date(Date modify_date) {
-		this.modify_date = modify_date;
+	public void setProductImageUrl(String productImageUrl) {
+		this.productImageUrl = productImageUrl;
 	}
 
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", category_id=" + category_id + ", description=" + description + ", content="
-				+ content + ", event=" + event + ", create_date=" + create_date + ", modify_date=" + modify_date + "]";
+		return "Product_api [displayInfoId=" + displayInfoId + ", placeName=" + placeName + ", productContent="
+				+ productContent + ", productDescription=" + productDescription + ", productId=" + productId
+				+ ", productImageUrl=" + productImageUrl + "]";
 	}
-	
 	
 }

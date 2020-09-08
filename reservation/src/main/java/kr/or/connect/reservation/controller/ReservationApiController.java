@@ -14,25 +14,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
-import kr.or.connect.reservation.dto.Category_api;
-import kr.or.connect.reservation.dto.Product_api;
-import kr.or.connect.reservation.dto.Promotion_api;
+import kr.or.connect.reservation.dto.Category;
+import kr.or.connect.reservation.dto.Product;
+import kr.or.connect.reservation.dto.Promotion;
+import kr.or.connect.reservation.service.DetailService;
 import kr.or.connect.reservation.service.MainPageService;
 
 @RestController
 @RequestMapping(path="/api")
-public class MainPageApiController {
+public class ReservationApiController {
 	
 	@Autowired
 	MainPageService mainpageService;
 	
-	@ApiOperation(response=Product_api.class, value="상품 정보")
+	@Autowired
+	DetailService detailService;
+	
+	@ApiOperation(response=Product.class, value="상품 정보")
 	@GetMapping(path = "/products", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public Map<String, Object> productList(@RequestParam(name="categoryId", required=false, defaultValue="0") int categoryId,
 			@RequestParam(name="start", required=false, defaultValue="0") int start, ModelMap modelMap){
 		int totalCount = 0;
-		List<Product_api> product_list = null;
+		List<Product> product_list = null;
 		if(categoryId == 0)
 		{
 			totalCount = mainpageService.getProductsCountFromAllCategorys();
@@ -51,21 +55,33 @@ public class MainPageApiController {
 		}
 		return map;
 	} 
-	@ApiOperation(response=Category_api.class, value="카테고리 정보")
+	@ApiOperation(response=Category.class, value="카테고리 정보")
 	@GetMapping("/categories")
 	@ResponseBody
-	public List<Category_api> categoryList(){
-		List<Category_api> category_list = mainpageService.getCategoryList();
+	public List<Category> categoryList(){
+		List<Category> category_list = mainpageService.getCategoryList();
 		return category_list;
 	}
 	
-	@ApiOperation(response=Promotion_api.class, value="프로모션 정보")
+	@ApiOperation(response=Promotion.class, value="프로모션 정보")
 	@GetMapping("/promotions")
 	@ResponseBody
-	public List<Promotion_api> promotionList() {
-		List<Promotion_api> promotion_list = mainpageService.getPromotionList();
+	public List<Promotion> promotionList() {
+		List<Promotion> promotion_list = mainpageService.getPromotionList();
 		return promotion_list;
 	}
+	
+	@ApiOperation(response=Product.class, value="상품 정보")
+	@GetMapping(path = "/products/{displayInfoId}", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Map<String, Object> detail(@RequestParam(name="displayInfoId", required=true) ModelMap modelMap){
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		
+		
+		return map;
+	} 
 	
 	
 }

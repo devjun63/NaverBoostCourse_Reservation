@@ -1,5 +1,12 @@
 package kr.or.connect.reservation.dao;
 
+import static kr.or.connect.reservation.dao.MainPageDaoSqls.SELECT_ALL_PRODUCT_API_DATA_AS_STARTING_NUMBER;
+import static kr.or.connect.reservation.dao.MainPageDaoSqls.SELECT_ALL_PRODUCT_COUNT;
+import static kr.or.connect.reservation.dao.MainPageDaoSqls.SELECT_EACH_PRODUCT_COUNT_FROM_CATEGORY;
+import static kr.or.connect.reservation.dao.MainPageDaoSqls.SELECT_NUMBER_OF_PRODUCT_COUNT_FROM_CATEOGORY;
+import static kr.or.connect.reservation.dao.MainPageDaoSqls.SELECT_PRODUCT_API_DATAS_AS_CATEGORYID_AND_START_NUMBER;
+import static kr.or.connect.reservation.dao.MainPageDaoSqls.SELECT_PROMOTION_API_DATAS;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -10,15 +17,9 @@ import javax.sql.DataSource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-
-
-import static kr.or.connect.reservation.dao.MainPageDaoSqls.*;
 
 import kr.or.connect.reservation.dto.Category;
 import kr.or.connect.reservation.dto.Product;
@@ -26,7 +27,7 @@ import kr.or.connect.reservation.dto.Product;
 import kr.or.connect.reservation.dto.Promotion;
 
 @Repository
-public class MainPageDao {
+public class DetailDao {
 	private NamedParameterJdbcTemplate jdbc;
 
 	private SimpleJdbcInsert insertAction;
@@ -39,12 +40,14 @@ public class MainPageDao {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	public MainPageDao(DataSource dataSource) {
+	public DetailDao(DataSource dataSource) {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
 		this.insertAction = new SimpleJdbcInsert(dataSource)
 				.withTableName("Product")
 				.usingGeneratedKeyColumns("id");
 	}
+	
+	 
 
 	public List<Product> selectallProductApiDatas(Integer start, Integer limit) {
 		Map<String, Integer> params = new HashMap<>();
@@ -97,5 +100,4 @@ public class MainPageDao {
 			return null;
 		}
 	}
-	
 }

@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
 <title>네이버 예약</title>
-<link href="../css/style.css" rel="stylesheet" />
+<link href="css/style.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -50,7 +50,12 @@
 						<div>
 							<div class="container_visual">
 								<!-- 슬라이딩기능: 이미지 (type = 'th')를 순차적으로 노출 -->
-								<ul class="visual_img"></ul>
+								<ul class="visual_img">
+									<c:forEach var="promotion_itmes" items="${promotion_list}">
+										<li><img alt=${promotion_itmes.product_id }
+											src="${promotion_itmes.productImageUrl }"></li>
+									</c:forEach>
+								</ul>
 							</div>
 							<span class="nxt_fix" style="display: none;"></span>
 						</div>
@@ -62,38 +67,76 @@
 					<li class="item" data-category="0"><a class="anchor active">
 							<span>전체리스트</span>
 					</a></li>
-					<c:forEach var="items" items="${category_list}" varStatus="status">
-						<li class="item" data-category=<c:out value="${items.id }"/>><a
-							class="anchor"> <span><c:out value="${items.name }" /></span>
+					<c:forEach var="category_items" items="${category_list}"
+						varStatus="status">
+						<li class="item"
+							data-category=<c:out value="${category_items.id }"/>><a
+							class="anchor"> <span><c:out
+										value="${category_items.name }" /></span>
 						</a></li>
 					</c:forEach>
 				</ul>
 			</div>
 			<div class="section_event_lst">
 				<p class="event_lst_txt">
-					바로 예매 가능한 행사가 <span class="pink">${totalCount}개</span> 있습니다
+					바로 예매 가능한 행사가 <span class="pink">${totalProductCount}개</span> 있습니다
 				</p>
 				<div class="wrap_event_box">
 					<!-- [D] lst_event_box 가 2컬럼으로 좌우로 나뉨, 더보기를 클릭할때마다 좌우 ul에 li가 추가됨 -->
 					<ul class="lst_event_box">
-						<c:forEach var="items" items="${product_list}" varStatus="status">
-							<li class="item"><a href="detail.html" class="item_book">
-									<div class="item_preview">
-										<img alt=<c:out value="${items.productContent }"/>
-											class="img_thumb"
-											src="<c:out value="../${items.productImageUrl }"/>" /> <span
-											class="img_border"></span>
-									</div>
-									<div class="event_txt">
-										<h4 class="event_txt_tit">
-											<span><c:out value="${items.productContent }" /></span> <small
-												class="sm"> <c:out value="${items.placeName }" /></small>
-										</h4>
-										<p class="event_txt_dsc">
-											<c:out value="${items.productDescription }" />
-										</p>
-									</div>
-							</a></li>
+						<c:forEach var="product_items" items="${product_list}"
+							varStatus="status">
+							<c:if test="${status.index%2==0}">
+								<li class="item"><a
+									href="detail?id=${product_items.productId}"
+									class="item_book">
+										<div class="item_preview">
+											<img alt=<c:out value="${product_items.productContent }" />
+												class="img_thumb"
+												src="<c:out value="${product_items.productImageUrl }"/>" />
+											<span class="img_border"></span>
+										</div>
+										<div class="event_txt">
+											<h4 class="event_txt_tit">
+												<span><c:out
+														value="${product_items.productDescription }" /></span> <small
+													class="sm"> <c:out
+														value="${product_items.placeName }" /></small>
+											</h4>
+											<p class="event_txt_dsc">
+												<c:out value="${product_items.productContent }" />
+											</p>
+										</div>
+								</a></li>
+							</c:if>
+						</c:forEach>
+					</ul>
+					<ul class="lst_event_box">
+						<c:forEach var="product_items" items="${product_list}"
+							varStatus="status">
+							<c:if test="${status.index%2!=0}">
+								<li class="item"><a
+									href="detail.html?id=${product_items.productId}"
+									class="item_book">
+										<div class="item_preview">
+											<img alt=<c:out value="${product_items.productContent }" />
+												class="img_thumb"
+												src="<c:out value="${product_items.productImageUrl }"/>" />
+											<span class="img_border"></span>
+										</div>
+										<div class="event_txt">
+											<h4 class="event_txt_tit">
+												<span><c:out
+														value="${product_items.productDescription }" /></span> <small
+													class="sm"> <c:out
+														value="${product_items.placeName }" /></small>
+											</h4>
+											<p class="event_txt_dsc">
+												<c:out value="${product_items.productContent }" />
+											</p>
+										</div>
+								</a></li>
+							</c:if>
 						</c:forEach>
 					</ul>
 					<!-- 더보기 -->
@@ -117,32 +160,160 @@
 		<span class="copyright">© NAVER Corp.</span>
 	</div>
 	</footer>
+	<script type="text/javascript" src="js/mainPage.js" defer></script>
+	<script>
+	function sendAjax(url,clickedName){
+		var oReq = new XMLHttpRequest();
+		oReq.open("GET", url);	// method: GET 
+		oReq.setRequestHeader("Content-Type", "application/json"); // Content-Type: json
+		oReq.responseType = "text";		// text for json
+		oReq.addEventListener("load", function () { // when success
+			console.log(this);
+			if( clickedName === "tab" ) 	{	makeHtmlContent(url, this);	  }  // TABUI 기능
+			else if( clickedName === "more" ) {	addhtmlcontent(url, this);  } // 더보기 기능
+		});
+		oReq.send();
+	}
+		var cateogorytabmenu = document.querySelector(".event_tab_lst");
+		cateogorytabmenu.addEventListener("click", function(evt) {
+			var categoryId;
+			if( evt.target.tagName === "LI" ) {
+				categoryId = evt.target.dataset.category;
+			} else if ( evt.target.tagName === "UL" ) {
+				categoryId = evt.target.firstChild.dataset.category;
+			} else if ( evt.target.tagName === "A" ) {
+				categoryId = evt.target.parentElement.dataset.category;
+			} else if( evt.target.tagName === "SPAN" ) {
+				categoryId = evt.target.parentElement.parentElement.dataset.category;
+			}
+			
+			//document.getElementById("start").value = 0;
+			sendAjax("/reservation/maincontents?categoryId="+categoryId, "tab");
+		});
+		
+		var morebtn = document.querySelector(".more");
+		
+		morebtn.addEventListener("click", function() {
+			var categoryId;
+			var startNum;
+			var activeEle = document.querySelector(".active");
+			console.log(activeEle);
+			categoryId = activeEle.parentElement.dataset.category;
+			console.log(categoryId);
+			startNum = document.querySelectorAll(".item_preview").length;
+			console.log(startNum);
+			sendAjax("/reservation/maincontents?categoryId="+categoryId+"&start="+startNum, "more");
+		});
+		
+		function makeHtmlContent(url,res) {
+			// debugger;
+			/* 1) 결과 데이터 값 json으로 받기 */
+			var resJson = JSON.parse(res.responseText);
 
-	<script type="rv-template" id="promotionItem">
-      <li class="item" style="background-image: url(http://211.249.62.123/productImages/${productId}/${productImageId});">
-          <a href="#"> <span class="img_btm_border"></span> <span class="img_right_border"></span> <span class="img_bg_gra"></span>
-              <div class="event_txt">
-                  <h4 class="event_txt_tit"></h4>
-                  <p class="event_txt_adr"></p>
-                  <p class="event_txt_dsc"></p>
-              </div>
-          </a>
-      </li>
-    </script>
+			/* 2) 결과 - HTML 그려주기 */
+			// 1. 카테고리 변경
+			var categoryId = resJson.categoryId
+			drawCategoryHtml(resJson,categoryId); // 카테고리 탭 변경
+			
+			// 2. 상품 리스트
+			Array.from(document.querySelectorAll(".lst_event_box")).forEach( v => {	v.remove();	}); // 기존 상품 Element 모두 제거
+			drawProductHtml(resJson); // 카테고리별 상품 화면에 추가(기본 4개)
+			
+			// 3. product 갯수
+			document.querySelector(".pink").innerHTML = resJson.totalProductCount+"개";
+			
+			// 4. 더보기 탭
+			if( resJson.morebtn ) {
+				document.querySelector(".more").style.display = "block";
+			} else {
+				document.querySelector(".more").style.display = "none";
+			}
+		}
+		
+		// Category HTML 동적 생성
+		function drawCategoryHtml(resJson,categoryId) {
+			var categoryhtml = document.getElementById("categoryItem").innerHTML;
+			var categoryResult = document.getElementById("totalCategoryItem").innerHTML;;
+			
+			for(var i=0; i<resJson.category_list.length; i++) {
+				categoryResult += categoryhtml.replace("{categoryId}", resJson.category_list[i].id)
+									.replace("{className}","anchor")
+									.replace("{categoryName}", resJson.category_list[i].name)
+				
+			}
+			document.querySelector(".event_tab_lst").innerHTML = categoryResult;
+			
+			Array.from(document.querySelector(".tab_lst_min").querySelectorAll("li")).forEach( a => {
+				a.firstElementChild.className = (a.dataset.category == categoryId) ? "anchor active" : "anchor"; 
+			});
+		}
+		
+		function drawProductHtml(resJson) {
+			var producthtml = document.getElementById("productItem").innerHTML;
+			console.log("프로덕트리스트 길이 : "+resJson.product_list.length);
+			var result = "<ul class='lst_event_box'>";
+				for(var i=0; i<resJson.product_list.length; i+=2) {
+					
+						result += producthtml.replace("{id}", resJson.product_list[i].displayInfoId)
+						.replace("{alt}", resJson.product_list[i].productContent)
+						.replace("{content}", resJson.product_list[i].productContent)
+						.replace("{description}", resJson.product_list[i].productDescription)
+						.replace("{placeName}", resJson.product_list[i].placeName)
+						.replace("{productImageUrl}", resJson.product_list[i].productImageUrl);
+				}
+				result += "</ul>";
+				document.querySelector(".more").insertAdjacentHTML("beforebegin",result);
+				result = "<ul class='lst_event_box'>";
+				for(var i=1; i<resJson.product_list.length; i+=2) {
+					
+					result += producthtml.replace("{id}", resJson.product_list[i].displayInfoId)
+					.replace("{alt}", resJson.product_list[i].productContent)
+					.replace("{content}", resJson.product_list[i].productContent)
+					.replace("{description}", resJson.product_list[i].productDescription)
+					.replace("{placeName}", resJson.product_list[i].placeName)
+					.replace("{productImageUrl}", resJson.product_list[i].productImageUrl);
+				}
+				result += "</ul>";
+				document.querySelector(".more").insertAdjacentHTML("beforebegin",result);
+			}
+		
+		function addhtmlcontent(url, res) {
+			var resJson = JSON.parse(res.responseText);
+			drawProductHtml(resJson); // 카테고리별 상품 화면에 추가(기본 4개)
+			
+			if( resJson.morebtn ) {
+				document.querySelector(".more").style.display = "block";
+			} else {
+				document.querySelector(".more").style.display = "none";
+			}
+		}
+		
+	</script>
+	<script type="totalCategory-template" id="totalCategoryItem">
+	<li class="item" data-category=0>
+		<a class="anchor"> <span>전체리스트</span></a>
+	</li>
+	</script>
+	<script type="rv-template" id="categoryItem">
+	<li class="item" data-category={categoryId}>
+	  	<a class="{className}"> <span>{categoryName}</span></a>
+	</li>
+	</script>
 
-	<script type="rv-template" id="itemList">
-      <li class="item">
-          <a href="detail.html?id=${id}" class="item_book">
-              <div class="item_preview">
-                  <img alt="${description}" class="img_thumb" src="http://211.249.62.123/productImages/${id}?type=th">
-                  <span class="img_border"></span>
-              </div>
-              <div class="event_txt">
-                  <h4 class="event_txt_tit"> <span>${description}</span> <small class="sm">${placeName}</small> </h4>
-                  <p class="event_txt_dsc">${content}</p>
-              </div>
-          </a>
-      </li>
-    </script>
+
+	<script type="rv-template" id="productItem">
+    <li class="item">
+       <a href="detail?&displayInfoId={id}" class="item_book">
+            <div class="item_preview">
+               <img alt="{alt}" class="img_thumb" src="{productImageUrl}">
+               <span class="img_border"></span>
+            </div>
+            <div class="event_txt">
+                <h4 class="event_txt_tit"><span>{description}</span> <small class="sm">{placeName}</small></h4>
+                <p class="event_txt_dsc">{content}</p>
+            </div>
+        </a>
+    </li>
+</script>
 </body>
 </html>

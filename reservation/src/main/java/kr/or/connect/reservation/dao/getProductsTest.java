@@ -7,25 +7,25 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import kr.or.connect.reservation.config.ApplicationConfig;
-import kr.or.connect.reservation.dto.Category_api;
-import kr.or.connect.reservation.dto.Product_api;
-import kr.or.connect.reservation.dto.Promotion_api;
+import kr.or.connect.reservation.dto.Category;
+import kr.or.connect.reservation.dto.Product;
+import kr.or.connect.reservation.dto.Promotion;
 import kr.or.connect.reservation.service.MainPageService;
 import kr.or.connect.reservation.service.impl.MainPageServiceImpl;
 
 
 public class getProductsTest {
 	private static ApplicationContext ac;
-	private static Promotion_api promotion_api;
+	private static Promotion promotion_api;
 
 	public static void main(String[] args) {
 		ac = new AnnotationConfigApplicationContext(ApplicationConfig.class); 
 		MainPageDao reservationMainpageDao = ac.getBean(MainPageDao.class);
 		MainPageService serviceTest = ac.getBean(MainPageService.class);
 		
-		List<Promotion_api> promotionTestList = new ArrayList<Promotion_api>(); 
-		List<Category_api> categoryTestList = new ArrayList<Category_api>();
-		List<Product_api> product_apiTestList = new ArrayList<Product_api>();
+		List<Promotion> promotionTestList = new ArrayList<Promotion>(); 
+		List<Category> categoryTestList = new ArrayList<Category>();
+		List<Product> product_apiTestList = new ArrayList<Product>();
 		
 		promotionTestList = reservationMainpageDao.selectPromotionList();
 		categoryTestList = reservationMainpageDao.selectCategoryList();
