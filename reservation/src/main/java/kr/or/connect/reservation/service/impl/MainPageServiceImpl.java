@@ -8,53 +8,62 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.connect.reservation.dao.MainPageDao;
 import kr.or.connect.reservation.dto.Category;
+import kr.or.connect.reservation.dto.CategoryResponse;
 import kr.or.connect.reservation.dto.Product;
+import kr.or.connect.reservation.dto.ProductResponse;
 import kr.or.connect.reservation.dto.Promotion;
+import kr.or.connect.reservation.dto.PromotionResponse;
 import kr.or.connect.reservation.service.MainPageService;
 
 @Service
 public class MainPageServiceImpl implements MainPageService {
 
 	@Autowired
-	MainPageDao reservationMainPageDao;
+	MainPageDao mainPageDao;
 	
 	@Override
 	@Transactional
-	public int getProductsCountFromAllCategorys() {
-		int allProductsCount = reservationMainPageDao.selectProductsTotalCountFromCategory();
-		return allProductsCount;
+	public CategoryResponse getCategories() {
+		
+		CategoryResponse categories = new CategoryResponse();
+		List<Category> items = mainPageDao.selectCategoryList();
+		categories.setItems(items);
+		return categories;
 	}
 
 	@Override
-	public int getNumberOfProductsCountFromCategory(Integer categoryId) {
-		int productsCount = reservationMainPageDao.selectProductsTotalCountFromCategory(categoryId);
-		return productsCount;
-	}
-	
-	@Override
-	public List<Promotion> getPromotionList() {
-		List<Promotion> promotions = reservationMainPageDao.selectPromotionList();
+	@Transactional
+	public PromotionResponse getPromotions() {
+		
+		PromotionResponse promotions = new PromotionResponse();
+		List<Promotion> items = mainPageDao.selectPromotionList();
+		promotions.setItems(items);
 		return promotions;
 	}
 	
 	@Override
-	public List<Category> getCategoryList() {
-		List<Category> categories = reservationMainPageDao.selectCategoryList();
-		return categories;
+	@Transactional
+	public ProductResponse getProducts(Integer start) {
+		ProductResponse products = new ProductResponse();
+		List<Product> items = mainPageDao.selectAllProducts(start, MainPageService.LIMIT);
+		int totalCount = mainPageDao.selectProductsTotalCount();
+		products.setItems(items);
+		products.setTotalCount(totalCount);
+		return products;
 	}
 	
+
 	@Override
-	public List<Product> getAllProductList(Integer start) {
-		List<Product> product_api_datas = reservationMainPageDao.selectallProductApiDatas(start, MainPageService.LIMIT);
-		return product_api_datas;
-	}
-	
-	@Override
-	public List<Product> getProductList(Integer categoryId, Integer start) {
-		List<Product> product_api_datas = reservationMainPageDao.selectProductApiDatas(categoryId, start, MainPageService.LIMIT);
-		return product_api_datas;
+	@Transactional
+	public ProductResponse getProducts(Integer categoryId, Integer start) {
+		
+		ProductResponse products = new ProductResponse();
+		List<Product> items = mainPageDao.selectProducts(categoryId, start, MainPageService.LIMIT);
+		int totalCount = mainPageDao.selectProductsTotalCount(categoryId);
+		products.setItems(items);
+		products.setTotalCount(totalCount);
+		return products;
 	}
 
-	
 	
 }

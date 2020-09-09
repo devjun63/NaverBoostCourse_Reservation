@@ -46,22 +46,22 @@ public class MainPageDao {
 				.usingGeneratedKeyColumns("id");
 	}
 
-	public List<Product> selectallProductApiDatas(Integer start, Integer limit) {
+	public List<Product> selectAllProducts(Integer start, Integer limit) {
 		Map<String, Integer> params = new HashMap<>();
 		params.put("start", start);
 		params.put("limit", limit);
-		return jdbc.query(SELECT_ALL_PRODUCT_API_DATA_AS_STARTING_NUMBER, params, Product_Api_rowMapper);
+		return jdbc.query(SELECT_ALL_PRODUCTS_AS_STARTING_NUMBER, params, Product_Api_rowMapper);
 	}
 	
-	public List<Product> selectProductApiDatas(Integer categoryId, Integer start, Integer limit) {
+	public List<Product> selectProducts(Integer categoryId, Integer start, Integer limit) {
 		Map<String, Integer> params = new HashMap<>();
 		params.put("categoryId", categoryId);
 		params.put("start", start);
 		params.put("limit", limit);
-		return jdbc.query(SELECT_PRODUCT_API_DATAS_AS_CATEGORYID_AND_START_NUMBER, params, Product_Api_rowMapper);
+		return jdbc.query(SELECT_PRODUCTS_AS_CATEGORYID_AND_START_NUMBER, params, Product_Api_rowMapper);
 	}
 
-	public Integer selectProductsTotalCountFromCategory() {
+	public Integer selectProductsTotalCount() {
 		try {
 			return (Integer)jdbc.queryForObject(SELECT_ALL_PRODUCT_COUNT, Collections.EMPTY_MAP, Integer.class);
 		}catch(EmptyResultDataAccessException e) {
@@ -70,9 +70,9 @@ public class MainPageDao {
 		}
 	}
 	
-	public Integer selectProductsTotalCountFromCategory(Integer category_id) {
+	public Integer selectProductsTotalCount(Integer categoryId) {
 		try {
-			Map<String,Integer> params = Collections.singletonMap("category_id", category_id);
+			Map<String,Integer> params = Collections.singletonMap("category_id", categoryId);
 			return (Integer)jdbc.queryForObject(SELECT_NUMBER_OF_PRODUCT_COUNT_FROM_CATEOGORY, params, Integer.class);
 		}catch (EmptyResultDataAccessException e){
 			e.printStackTrace();

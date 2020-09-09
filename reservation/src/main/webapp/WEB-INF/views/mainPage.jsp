@@ -51,9 +51,9 @@
 							<div class="container_visual">
 								<!-- 슬라이딩기능: 이미지 (type = 'th')를 순차적으로 노출 -->
 								<ul class="visual_img">
-									<c:forEach var="promotion_itmes" items="${promotion_list}">
-										<li><img alt=${promotion_itmes.product_id }
-											src="${promotion_itmes.productImageUrl }"></li>
+									<c:forEach var="promotion" items="${promotions}">
+										<li><img alt=${promotion.product_id }
+											src="${promotion.productImageUrl }"></li>
 									</c:forEach>
 								</ul>
 							</div>
@@ -67,12 +67,12 @@
 					<li class="item" data-category="0"><a class="anchor active">
 							<span>전체리스트</span>
 					</a></li>
-					<c:forEach var="category_items" items="${category_list}"
+					<c:forEach var="category" items="${categories}"
 						varStatus="status">
 						<li class="item"
-							data-category=<c:out value="${category_items.id }"/>><a
+							data-category=<c:out value="${category.id }"/>><a
 							class="anchor"> <span><c:out
-										value="${category_items.name }" /></span>
+										value="${category.name }" /></span>
 						</a></li>
 					</c:forEach>
 				</ul>
@@ -235,10 +235,10 @@
 			var categoryhtml = document.getElementById("categoryItem").innerHTML;
 			var categoryResult = document.getElementById("totalCategoryItem").innerHTML;;
 			
-			for(var i=0; i<resJson.category_list.length; i++) {
-				categoryResult += categoryhtml.replace("{categoryId}", resJson.category_list[i].id)
+			for(var i=0; i<resJson.categories.length; i++) {
+				categoryResult += categoryhtml.replace("{categoryId}", resJson.categories[i].id)
 									.replace("{className}","anchor")
-									.replace("{categoryName}", resJson.category_list[i].name)
+									.replace("{categoryName}", resJson.categories[i].name)
 				
 			}
 			document.querySelector(".event_tab_lst").innerHTML = categoryResult;

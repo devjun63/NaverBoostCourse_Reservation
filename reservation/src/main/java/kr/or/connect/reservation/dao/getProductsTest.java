@@ -29,7 +29,7 @@ public class getProductsTest {
 		
 		promotionTestList = reservationMainpageDao.selectPromotionList();
 		categoryTestList = reservationMainpageDao.selectCategoryList();
-		product_apiTestList = serviceTest.getProductList(3, 5);
+		product_apiTestList = reservationMainpageDao.selectProducts(3, 5, 4);
 		
 		for(int i = 0; i < product_apiTestList.size(); i++)
 		{

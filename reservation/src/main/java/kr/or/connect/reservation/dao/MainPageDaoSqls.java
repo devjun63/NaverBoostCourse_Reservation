@@ -7,7 +7,7 @@ public class MainPageDaoSqls {
 	public static final String SELECT_PROMOTION_API_DATAS = "select PM.id, PM.product_id, FI.save_file_name as productImageUrl \r\n" + 
 			"FROM file_info FI left outer join product_image PI on FI.id = PI.file_id and PI.type = 'th'\r\n" + 
 			"join promotion PM ON PM.product_id = PI.product_id";
-	public static final String SELECT_PRODUCT_API_DATAS_AS_CATEGORYID_AND_START_NUMBER = "select DI.id as displayInfoId, DI.place_name as placeName,"
+	public static final String SELECT_PRODUCTS_AS_CATEGORYID_AND_START_NUMBER = "select DI.id as displayInfoId, DI.place_name as placeName,"
 			+ " P.content as productContent, P.description as productDescription, P.id as productId, FI.save_file_name as productImageUrl\r\n" + 
 			"from product P\r\n" + 
 			"join product P2 on (P.category_id = P2.category_id)\r\n" + 
@@ -16,7 +16,7 @@ public class MainPageDaoSqls {
 			"join file_info FI on (PI.file_id = FI.id)\r\n" + 
 			"where PI.type = 'th' and P.category_id = :categoryId group by P.id limit :start, :limit";
 	
-	public static final String SELECT_ALL_PRODUCT_API_DATA_AS_STARTING_NUMBER =
+	public static final String SELECT_ALL_PRODUCTS_AS_STARTING_NUMBER =
 			"select DI.id as displayInfoId, DI.place_name as placeName, P.content as productContent, P.description as productDescription, P.id as productId, FI.save_file_name as productImageUrl\r\n" + 
 			"			from product P\r\n" + 
 			"			join product P2 on (P.category_id = P2.category_id)\r\n" + 

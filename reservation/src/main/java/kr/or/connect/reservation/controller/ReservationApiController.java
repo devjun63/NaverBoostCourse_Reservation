@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import kr.or.connect.reservation.dto.Category;
+import kr.or.connect.reservation.dto.CategoryResponse;
 import kr.or.connect.reservation.dto.Product;
+import kr.or.connect.reservation.dto.ProductResponse;
 import kr.or.connect.reservation.dto.Promotion;
+import kr.or.connect.reservation.dto.PromotionResponse;
 import kr.or.connect.reservation.service.DetailService;
 import kr.or.connect.reservation.service.MainPageService;
 
@@ -35,22 +38,22 @@ public class ReservationApiController {
 	@ResponseBody
 	public Map<String, Object> productList(@RequestParam(name="categoryId", required=false, defaultValue="0") int categoryId,
 			@RequestParam(name="start", required=false, defaultValue="0") int start, ModelMap modelMap){
-		int totalCount = 0;
-		List<Product> product_list = null;
-		if(categoryId == 0)
-		{
-			totalCount = mainpageService.getProductsCountFromAllCategorys();
-			product_list = mainpageService.getProductList(categoryId + 1, start);	//categoryId => 1 ~ 5
+		
+		ProductResponse products = new ProductResponse();
+		
+		if(categoryId == 0){
+			products = mainpageService.getProducts(categoryId +1 , start);
 		}
 		else {
-			totalCount = mainpageService.getNumberOfProductsCountFromCategory(categoryId);
-			product_list = mainpageService.getProductList(categoryId, start);
+			products = mainpageService.getProducts(categoryId, start);
 		}
+		
 		Map<String, Object> map = new HashMap<>();
-		map.put("totalCount", totalCount);
-		if(product_list.isEmpty()) {}
+		
+		if(products.getItems().isEmpty()) {}
 		else {
-			map.put("items", product_list);
+			map.put("totalCount", products.getTotalCount());
+			map.put("items", products.getItems());
 			map.put("morebtn", "morebtn");
 		}
 		return map;
@@ -58,16 +61,16 @@ public class ReservationApiController {
 	@ApiOperation(response=Category.class, value="카테고리 정보")
 	@GetMapping("/categories")
 	@ResponseBody
-	public List<Category> categoryList(){
-		List<Category> category_list = mainpageService.getCategoryList();
-		return category_list;
+	public CategoryResponse categoryList(){
+		CategoryResponse categoryResponse = mainpageService.getCategories();
+		return categoryResponse;
 	}
 	
 	@ApiOperation(response=Promotion.class, value="프로모션 정보")
 	@GetMapping("/promotions")
 	@ResponseBody
-	public List<Promotion> promotionList() {
-		List<Promotion> promotion_list = mainpageService.getPromotionList();
+	public PromotionResponse promotionList() {
+		PromotionResponse promotion_list = mainpageService.getPromotions();
 		return promotion_list;
 	}
 	
