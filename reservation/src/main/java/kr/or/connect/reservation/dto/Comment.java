@@ -3,14 +3,21 @@ package kr.or.connect.reservation.dto;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Comment {
 	private String comment; 						// 상품평
 	private int commentId; 							// 상품평 Id
-	private List<CommentImage> commentImages;		// 상품평 이미지들
-	private Date createDate; 						// 생성일
+	private List<CommentImage> commentImages;		// 상품평 이미지들  
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
+	private Date createDate; 						// 생성일 
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
 	private Date modifyDate;						// 수정일
-	private int productId;							// 상품 Id
-	private String reservationDate;                 // 예약일 
+	private int productId;							// 상품 Id 
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
+	private Date reservationDate;                 // 예약일 
 	private String reservationEmail;                // 예약자 이메일
 	private int reservationInfoId;                  // 예약 Id
 	private String reservationName;                 // 예약자 명
@@ -20,7 +27,7 @@ public class Comment {
 	public Comment() {}
 
 	public Comment(String comment, int commentId, List<CommentImage> commentImages, Date createDate, Date modifyDate,
-			int productId, String reservationDate, String reservationEmail, int reservationInfoId,
+			int productId, Date reservationDate, String reservationEmail, int reservationInfoId,
 			String reservationName, String reservationTelephone, double score) {
 		super();
 		this.comment = comment;
@@ -85,11 +92,11 @@ public class Comment {
 		this.productId = productId;
 	}
 
-	public String getReservationDate() {
+	public Date getReservationDate() {
 		return reservationDate;
 	}
 
-	public void setReservationDate(String reservationDate) {
+	public void setReservationDate(Date reservationDate) {
 		this.reservationDate = reservationDate;
 	}
 

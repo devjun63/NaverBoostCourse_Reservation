@@ -37,9 +37,6 @@ public class MainPageController {
 			@RequestParam(name="start", required=false, defaultValue="0") int start, ModelMap model){
 
 		ProductResponse productResponse = mainPageService.getProducts(start);
-		
-		
-		
 		CategoryResponse categories = mainPageService.getCategories();
 		PromotionResponse promotions = mainPageService.getPromotions();
 
@@ -56,8 +53,8 @@ public class MainPageController {
 	@ResponseBody 
 	public Map<String,Object> content(
 			@RequestParam(name="categoryId", required=false, defaultValue="0") Integer categoryId,
-			@RequestParam(name="start", required=false, defaultValue="0") int start,
-			ModelMap model) {
+			@RequestParam(name="start", required=false, defaultValue="0") int start) 
+	{
 		System.out.println("카테고리 아이디 : "+categoryId);
 		System.out.println("시작 숫자 : "+start);
 
@@ -88,6 +85,7 @@ public class MainPageController {
 			map.put("product_list", productResponse.getItems());
 			map.put("morebtn", "morebtn");
 		}
+		
 		return map;
 	} 
 }

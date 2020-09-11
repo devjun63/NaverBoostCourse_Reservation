@@ -3,17 +3,17 @@ package kr.or.connect.reservation.dto;
 import java.util.List;
 
 public class DisplayInfoResponse {
-	private double averageScore;
-	private List<Comment> comments;
-	private List<DisplayInfo> displayInfo;
-	private List<DisplayInfoImage> displayInfoImage;
-	private List<ProductImage> productImages;
-	private List<ProductPrice> productPrices;
+	private double averageScore;                        //
+	private List<Comment> comments;                     // 상품평
+	private DisplayInfo displayInfo;              // 상품 전시 (Display) 모델
+	private DisplayInfoImage displayInfoImage;	// 전시 이미지
+	private List<ProductImage> productImages;           // 상품 이미지 모델
+	private List<ProductPrice> productPrices;           // 상품 가격
 	
 	public DisplayInfoResponse() {}
 	
-	public DisplayInfoResponse(double averageScore, List<Comment> comments, List<DisplayInfo> displayInfo,
-			List<DisplayInfoImage> displayInfoImage, List<ProductImage> productImages,
+	public DisplayInfoResponse(double averageScore, List<Comment> comments, DisplayInfo displayInfo,
+			DisplayInfoImage displayInfoImage, List<ProductImage> productImages,
 			List<ProductPrice> productPrices) {
 		super();
 		this.averageScore = averageScore;
@@ -40,19 +40,19 @@ public class DisplayInfoResponse {
 		this.comments = comments;
 	}
 
-	public List<DisplayInfo> getDisplayInfo() {
+	public DisplayInfo getDisplayInfo() {
 		return displayInfo;
 	}
 
-	public void setDisplayInfo(List<DisplayInfo> displayInfo) {
+	public void setDisplayInfo(DisplayInfo displayInfo) {
 		this.displayInfo = displayInfo;
 	}
 
-	public List<DisplayInfoImage> getDisplayInfoImage() {
+	public DisplayInfoImage getDisplayInfoImage() {
 		return displayInfoImage;
 	}
 
-	public void setDisplayInfoImage(List<DisplayInfoImage> displayInfoImage) {
+	public void setDisplayInfoImage(DisplayInfoImage displayInfoImage) {
 		this.displayInfoImage = displayInfoImage;
 	}
 

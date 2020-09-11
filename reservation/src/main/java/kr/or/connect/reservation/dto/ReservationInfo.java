@@ -3,15 +3,20 @@ package kr.or.connect.reservation.dto;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ReservationInfo {
 	// description: 예약정보 모델
 	private boolean cancelYn;                   // 예약 취소 여부
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
 	private Date createDate;                    // 예약 생성일시
 	private List<DisplayInfo> displayInfo;		// 상품 전시 (Display) 모델
 	private int displayInfoId;                  // 전시상품 Id
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
 	private Date modifyDate;                    // 예약 수정일시
 	private int productId;                      // 상품 Id
-	private String reservationDate;             // 예약일
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
+	private java.sql.Date reservationDate;             // 예약일
 	private String reservationEmail;            // 예약자 이메일
 	private int reservationInfoId;              // 예약 Id
 	private String reservationName;             // 예약자명
@@ -21,7 +26,7 @@ public class ReservationInfo {
 	public ReservationInfo() {}
 	
 	public ReservationInfo(boolean cancelYn, Date createDate, List<DisplayInfo> displayInfo, int displayInfoId,
-			Date modifyDate, int productId, String reservationDate, String reservationEmail, int reservationInfoId,
+			Date modifyDate, int productId, java.sql.Date reservationDate, String reservationEmail, int reservationInfoId,
 			String reservationName, String reservationTelephone, Long totalPrice) {
 		super();
 		this.cancelYn = cancelYn;
@@ -86,11 +91,11 @@ public class ReservationInfo {
 		this.productId = productId;
 	}
 
-	public String getReservationDate() {
+	public java.sql.Date getReservationDate() {
 		return reservationDate;
 	}
 
-	public void setReservationDate(String reservationDate) {
+	public void setReservationDate(java.sql.Date reservationDate) {
 		this.reservationDate = reservationDate;
 	}
 

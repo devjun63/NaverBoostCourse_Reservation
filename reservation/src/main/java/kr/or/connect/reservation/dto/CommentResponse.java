@@ -3,11 +3,15 @@ package kr.or.connect.reservation.dto;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class CommentResponse {
 	private String comment;                     // 평
 	private int commentId;                      // 한줄평 Id
 	private List<CommentImage> commentImage;	// 상품평 이미지
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
 	private Date createDate;                    // 등록일
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
 	private Date modifyDate;                    // 수정일
 	private int productId;                      // 상품 Id
 	private int reservationInfoId;              // 예약정보 Id

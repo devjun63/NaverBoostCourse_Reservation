@@ -30,7 +30,6 @@ public class MainPageDao {
 	private NamedParameterJdbcTemplate jdbc;
 
 	private SimpleJdbcInsert insertAction;
-	private RowMapper<Product> product_rowMapper = BeanPropertyRowMapper.newInstance(Product.class);
 	private RowMapper<Promotion> promotion_Api_rowMapper = BeanPropertyRowMapper.newInstance(Promotion.class);
 	private RowMapper<Category> Cateogory_Api_rowMapper = BeanPropertyRowMapper.newInstance(Category.class);
 	private RowMapper<Product> Product_Api_rowMapper = BeanPropertyRowMapper.newInstance(Product.class);

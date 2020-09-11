@@ -34,6 +34,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		
 
 		<!-- Servlet JSP JSTL -->
 		<dependency>
@@ -92,7 +93,7 @@
 			<artifactId>jackson-datatype-jdk8</artifactId>
 			<version>${jackson2.version}</version>
 		</dependency>
-		
+
 		<!-- swagger -->
 		<dependency>
 			<groupId>io.springfox</groupId>

@@ -2,10 +2,14 @@ package kr.or.connect.reservation.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ProductPrice {
 	// description: 상품 가격
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
 	private Date createDate;        // 생성일
 	private double discountRate;    // 할인율
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
 	private Date modifyDate;        // 수정일
 	private int price;              // 가격
 	private String priceTypeName;	// 가격 타입명
