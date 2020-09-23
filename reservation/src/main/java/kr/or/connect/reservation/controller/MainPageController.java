@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import kr.or.connect.reservation.dto.CategoryResponse;
+import kr.or.connect.reservation.dto.DisplayInfoResponse;
 import kr.or.connect.reservation.dto.Product;
 import kr.or.connect.reservation.dto.ProductResponse;
 import kr.or.connect.reservation.dto.PromotionResponse;
+import kr.or.connect.reservation.service.DetailService;
 import kr.or.connect.reservation.service.MainPageService;
 
 
@@ -31,6 +34,9 @@ public class MainPageController {
 
 	@Autowired
 	MainPageService mainPageService;
+	
+	@Autowired
+	DetailService detailService;
 
 	@GetMapping("")
 	public String mainPage(@RequestParam(name="categoryId", required=false, defaultValue="0") int categoryId,
@@ -87,5 +93,26 @@ public class MainPageController {
 		}
 		
 		return map;
+	}
+	
+	@GetMapping(path = "/detail")
+	public String detail(@RequestParam(name="id", required=false, defaultValue="0") Integer displayInfoId, ModelMap model) {
+		
+		DisplayInfoResponse displayInfoResponse = detailService.getDisplayInfoResponse(displayInfoId);
+		Map<String, Object> map = new HashMap<>();
+		map.put("displayInfo", displayInfoResponse.getDisplayInfo());
+		if(displayInfoResponse.getProductImages().size() > 1) {
+			map.put("etc", "hasEtc");
+		}else {
+			map.put("etc", "notEtc");
+		}
+		map.put("productImages", displayInfoResponse.getProductImages());
+		map.put("displayInfoImage", displayInfoResponse.getDisplayInfoImage());
+		map.put("comments", displayInfoResponse.getComments());
+		map.put("averageScore", (Double)displayInfoResponse.getAverageScore());    
+		map.put("productPrices", displayInfoResponse.getProductPrices());
+		map.put("displayInfoId", displayInfoId);
+		model.addAllAttributes(map);
+		return "detail";
 	} 
 }

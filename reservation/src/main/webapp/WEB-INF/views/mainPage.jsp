@@ -116,7 +116,7 @@
 							varStatus="status">
 							<c:if test="${status.index%2!=0}">
 								<li class="item"><a
-									href="detail.html?id=${product_items.productId}"
+									href="detail?id=${product_items.productId}"
 									class="item_book">
 										<div class="item_preview">
 											<img alt=<c:out value="${product_items.productContent }" />
@@ -303,7 +303,7 @@
 
 	<script type="rv-template" id="productItem">
     <li class="item">
-       <a href="detail?&displayInfoId={id}" class="item_book">
+       <a href="detail?id={id}" class="item_book">
             <div class="item_preview">
                <img alt="{alt}" class="img_thumb" src="{productImageUrl}">
                <span class="img_border"></span>

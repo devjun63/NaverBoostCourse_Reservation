@@ -155,8 +155,7 @@ public class DetailDao {
 		return comments;
 	}
 	
-	public Map<String, Double> getCountAndSumOfScoresFromcomments (List<Comment> comments)
-	{
+	public Map<String, Double> getCountAndSumOfScoresFromcomments (List<Comment> comments){
 		Map<String, Double> map = new HashMap<>();
 		
 		Double count = 0.0;
@@ -172,5 +171,51 @@ public class DetailDao {
 		return map;
 	}
 	
+	public List<ProductImage> extractProductEtcImage(List<ProductImage> productImages){
+		List<ProductImage> tempProductImages = new ArrayList<>();
+		
 	
+		for(int i = 0; i < productImages.size(); i++)
+		{
+			if(productImages.get(i).getType().equals("ma"))
+			{
+				ProductImage tempProductImage = new ProductImage();
+				tempProductImage.setContentType(productImages.get(i).getContentType());
+				tempProductImage.setCreateDate(productImages.get(i).getCreateDate());
+				tempProductImage.setDeleteFlag(productImages.get(i).isDeleteFlag());
+				tempProductImage.setFileInfoId(productImages.get(i).getFileInfoId());
+				tempProductImage.setFileName(productImages.get(i).getFileName());
+				tempProductImage.setModifyDate(productImages.get(i).getModifyDate());
+				tempProductImage.setProductId(productImages.get(i).getProductId());
+				tempProductImage.setProductImageId(productImages.get(i).getProductImageId());
+				tempProductImage.setSaveFileName(productImages.get(i).getSaveFileName());
+				tempProductImage.setType(productImages.get(i).getType());
+				tempProductImages.add(tempProductImage);
+				System.out.println(productImages.get(i).getSaveFileName());
+				break;
+			}
+		}
+		
+		for(int i = 0; i < productImages.size(); i++)
+		{
+			if(productImages.get(i).getType().equals("et"))
+			{
+				ProductImage tempProductImage = new ProductImage();
+				tempProductImage.setContentType(productImages.get(i).getContentType());
+				tempProductImage.setCreateDate(productImages.get(i).getCreateDate());
+				tempProductImage.setDeleteFlag(productImages.get(i).isDeleteFlag());
+				tempProductImage.setFileInfoId(productImages.get(i).getFileInfoId());
+				tempProductImage.setFileName(productImages.get(i).getFileName());
+				tempProductImage.setModifyDate(productImages.get(i).getModifyDate());
+				tempProductImage.setProductId(productImages.get(i).getProductId());
+				tempProductImage.setProductImageId(productImages.get(i).getProductImageId());
+				tempProductImage.setSaveFileName(productImages.get(i).getSaveFileName());
+				tempProductImage.setType(productImages.get(i).getType());
+				tempProductImages.add(tempProductImage);
+				break;
+			}
+			
+		}
+		return tempProductImages;
+	}
 }

@@ -48,12 +48,14 @@ public class DetailServiceImpl implements DetailService{
 		comments = detailDao.setCommentAsCommentImages(comments, commentImages);
 		countAndSum = detailDao.getCountAndSumOfScoresFromcomments(comments);
 		averageScore = detailDao.getTheAverageOfTheScores(countAndSum);
+		List<ProductImage> extractproductImages = detailDao.extractProductEtcImage(productImages);
+		
 		
 		displayInfoResponse.setAverageScore(averageScore);
 		displayInfoResponse.setComments(comments);
 		displayInfoResponse.setDisplayInfo(displayInfo);
 		displayInfoResponse.setDisplayInfoImage(displayInfoImage);
-		displayInfoResponse.setProductImages(productImages);
+		displayInfoResponse.setProductImages(extractproductImages);
 		displayInfoResponse.setProductPrices(productPrices);
 		
 		return displayInfoResponse;
