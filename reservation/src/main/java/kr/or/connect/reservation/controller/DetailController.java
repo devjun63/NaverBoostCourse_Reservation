@@ -40,8 +40,6 @@ public class DetailController {
 	@ResponseBody 
 	public Map<String,Object> content(@RequestParam("displayInfoId")Integer displayInfoId)
 	{
-		
-
 		DisplayInfoResponse displayInfoResponse = detailService.getDisplayInfoResponse(displayInfoId);
 		Map<String, Object> map = new HashMap<>();
 		map.put("displayInfoId", displayInfoId);
