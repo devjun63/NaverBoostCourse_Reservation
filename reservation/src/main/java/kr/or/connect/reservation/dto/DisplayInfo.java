@@ -4,35 +4,35 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class DisplayInfo {
-	private int categoryId;             // 카테고리 (category) Id
-	private String categoryName;        // 카테고리 이름
+public class DisplayInfo { 
+	private int categoryId; 				// 카테고리 Id
+	private String cateogryName;			// 카테고리 이름
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
-	private Date createDate;            // 생성일
-	private int displayInfoId;          // 전시 (display_info) Id
-	private String email;               // 이메일
-	private String homepage;            // 홈페이지
+	private Date createDate;				// 생성일
+	private int displayInfoId;				// 전시 (display_info) Id
+	private String email;					// 이메일
+	private String homepage;				// 홈페이지
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
-	private Date modifyDate;            // 수정일
-	private String openingHours;        // 전시 시간
-	private String placeLot;            // 전시 번지명
-	private String placeName;           // 전시장
-	private String placeStreet;         // 전시 도로명
-	private String productContent;      // 상품 내용
-	private String productDescription;	// 상품 설명
-	private String productEvent;        // 상품 이벤트
-	private int productId;              // 상품 (product) Id
-	private String telephone;           // 전화번호
+	private Date modifyDate;				// 수정일
+	private String openingHours;			// 전시 시간
+	private String placeLot;				// 전시 번지명
+	private String placeName;				// 전시장
+	private String placeStreet;				// 전시 도로명
+	private String productContent;			// 상품 내용
+	private String productDescription;		// 상품 설명
+	private String productEvent;			// 상품 이벤트
+	private int productId;					// 상품 (product) Id
+	private String telephone;				// 전화번호
 	
 	public DisplayInfo() {}
-
-	public DisplayInfo(int categoryId, String categoryName, Date createDate, int displayInfoId, String email,
+	
+	public DisplayInfo(int categoryId, String cateogryName, Date createDate, int displayInfoId, String email,
 			String homepage, Date modifyDate, String openingHours, String placeLot, String placeName,
 			String placeStreet, String productContent, String productDescription, String productEvent, int productId,
 			String telephone) {
 		super();
 		this.categoryId = categoryId;
-		this.categoryName = categoryName;
+		this.cateogryName = cateogryName;
 		this.createDate = createDate;
 		this.displayInfoId = displayInfoId;
 		this.email = email;
@@ -57,12 +57,12 @@ public class DisplayInfo {
 		this.categoryId = categoryId;
 	}
 
-	public String getCategoryName() {
-		return categoryName;
+	public String getCateogryName() {
+		return cateogryName;
 	}
 
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
+	public void setCateogryName(String cateogryName) {
+		this.cateogryName = cateogryName;
 	}
 
 	public Date getCreateDate() {
@@ -129,11 +129,11 @@ public class DisplayInfo {
 		this.placeName = placeName;
 	}
 
-	public String getplaceStreet() {
+	public String getPlaceStreet() {
 		return placeStreet;
 	}
 
-	public void setplaceStreet(String placeStreet) {
+	public void setPlaceStreet(String placeStreet) {
 		this.placeStreet = placeStreet;
 	}
 
@@ -179,7 +179,7 @@ public class DisplayInfo {
 
 	@Override
 	public String toString() {
-		return "DisplayInfo [categoryId=" + categoryId + ", categoryName=" + categoryName + ", createDate=" + createDate
+		return "DisplayInfo [categoryId=" + categoryId + ", cateogryName=" + cateogryName + ", createDate=" + createDate
 				+ ", displayInfoId=" + displayInfoId + ", email=" + email + ", homepage=" + homepage + ", modifyDate="
 				+ modifyDate + ", openingHours=" + openingHours + ", placeLot=" + placeLot + ", placeName=" + placeName
 				+ ", placeStreet=" + placeStreet + ", productContent=" + productContent + ", productDescription="

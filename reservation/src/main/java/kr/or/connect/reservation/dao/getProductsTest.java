@@ -17,6 +17,7 @@ import kr.or.connect.reservation.dto.ProductImage;
 import kr.or.connect.reservation.dto.Promotion;
 import kr.or.connect.reservation.service.DetailService;
 import kr.or.connect.reservation.service.MainPageService;
+import kr.or.connect.reservation.service.ReservationService;
 import kr.or.connect.reservation.service.impl.MainPageServiceImpl;
 
 
@@ -29,7 +30,7 @@ public class getProductsTest {
 		MainPageDao reservationMainpageDao = ac.getBean(MainPageDao.class);
 		MainPageService serviceTest = ac.getBean(MainPageService.class);
 		DetailService detailTest = ac.getBean(DetailService.class);
-		
+		ReservationService reservationService = ac.getBean(ReservationService.class);
 		
 		/*List<Promotion> promotionTestList = new ArrayList<Promotion>(); 
 		List<Category> categoryTestList = new ArrayList<Category>();
@@ -71,13 +72,15 @@ public class getProductsTest {
 		}
 		
 		System.out.println("디스플레이 인포 이미지 데이터 : "+detailDaoTest.getDisplayInfoImage(42).toString());*/
-		DisplayInfoResponse displayInfoResponse = new DisplayInfoResponse();
+		/*DisplayInfoResponse displayInfoResponse = new DisplayInfoResponse();
 		displayInfoResponse = detailTest.getDisplayInfoResponse(1);
 		System.out.println(displayInfoResponse.getAverageScore());
 		System.out.println(displayInfoResponse.getComments().get(0).getReservationDate());
 		System.out.println(displayInfoResponse.getDisplayInfo().getModifyDate());
 		System.out.println(displayInfoResponse.getDisplayInfoImage().getCreateDate());
 		System.out.println(displayInfoResponse.getProductImages().get(0).getModifyDate());
-		System.out.println(displayInfoResponse.getProductPrices().get(0).getCreateDate());
+		System.out.println(displayInfoResponse.getProductPrices().get(0).getCreateDate());*/
+		
+		System.out.println(reservationService.getReservationInfo("kimjinsu@connect.co.kr"));
 	}
 }
