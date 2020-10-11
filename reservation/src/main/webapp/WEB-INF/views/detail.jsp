@@ -6,6 +6,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="description"
+	content="네이버 예약, 네이버 예약이 연동된 곳 어디서나 바로 예약하고, 네이버 예약 홈(나의예약)에서 모두 관리할 수 있습니다." />
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
 <title>Deatail Page</title>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -135,7 +139,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="section_btn">
+				<div class="section_btn"
+					data-displayinfo="${displayInfo.displayInfoId}">
 					<button type="button" class="bk_btn">
 						<i class="fn fn-nbooking-calender2"></i> <span>예매하기</span>
 					</button>
@@ -424,6 +429,24 @@
 				}
 			});
 		});
+		var reserveView_btn = document.querySelector(".section_btn");
+		reserveView_btn.addEventListener("click", function(evt) {
+			var displayInfoId;
+			if( evt.target.tagName === "DIV" ) {
+				displayInfoId = evt.target.dataset.displayinfo;
+			} else if ( evt.target.tagName === "BUTTON" ) {
+				displayInfoId = evt.target.parentElement.dataset.displayinfo;
+			} else if ( evt.target.tagName === "I" ) {
+				displayInfoId = evt.target.parentElement.parentElement.dataset.displayinfo;
+			} else if( evt.target.tagName === "SPAN" ) {
+				displayInfoId = evt.target.parentElement.parentElement.dataset.displayinfo;
+			}
+			
+			//document.getElementById("start").value = 0;
+			location.href = "/reservation/reservePage?id="+displayInfoId;
+		});
+		
+		
 			var image_ul = document.querySelector(".visual_img.detail_swipe");
 			var prevBtn = document.querySelector(".prev");
 			var nextBtn = document.querySelector(".nxt");

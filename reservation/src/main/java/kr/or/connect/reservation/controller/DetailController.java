@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.or.connect.reservation.dto.CategoryResponse;
 import kr.or.connect.reservation.dto.DisplayInfoResponse;
-import kr.or.connect.reservation.dto.ProductResponse;
 import kr.or.connect.reservation.service.DetailService;
 
 @Controller
@@ -24,8 +22,29 @@ public class DetailController {
 	@Autowired
 	DetailService detailService;
 	
+	@GetMapping(path = "/detail")
+	public String detail(@RequestParam(name="id", required=false, defaultValue="0") Integer displayInfoId, ModelMap model) {
+		
+		DisplayInfoResponse displayInfoResponse = detailService.getDisplayInfoResponse(displayInfoId);
+		Map<String, Object> map = new HashMap<>();
+		map.put("displayInfo", displayInfoResponse.getDisplayInfo());
+		if(displayInfoResponse.getProductImages().size() > 1) {
+			map.put("etc", "hasEtc");
+		}else {
+			map.put("etc", "notEtc");
+		}
+		map.put("productImages", displayInfoResponse.getProductImages());
+		map.put("displayInfoImage", displayInfoResponse.getDisplayInfoImage());
+		map.put("comments", displayInfoResponse.getComments());
+		map.put("averageScore", (Double)displayInfoResponse.getAverageScore());    
+		map.put("productPrices", displayInfoResponse.getProductPrices());
+		map.put("displayInfoId", displayInfoId);
+		model.addAllAttributes(map);
+		return "detail";
+	}
+	
 	@GetMapping(path = "/review/{id}")
-	public String detail(@PathVariable("id") Integer displayInfoId, ModelMap model) {
+	public String review(@PathVariable("id") Integer displayInfoId, ModelMap model) {
 		
 		DisplayInfoResponse displayInfoResponse = detailService.getDisplayInfoResponse(displayInfoId);
 		Map<String, Object> map = new HashMap<>();
@@ -40,8 +59,6 @@ public class DetailController {
 	@ResponseBody 
 	public Map<String,Object> content(@RequestParam("displayInfoId")Integer displayInfoId)
 	{
-		
-
 		DisplayInfoResponse displayInfoResponse = detailService.getDisplayInfoResponse(displayInfoId);
 		Map<String, Object> map = new HashMap<>();
 		map.put("displayInfoId", displayInfoId);

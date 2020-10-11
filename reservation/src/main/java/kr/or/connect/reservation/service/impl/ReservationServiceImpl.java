@@ -1,14 +1,19 @@
 package kr.or.connect.reservation.service.impl;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.connect.reservation.dao.ReservationDao;
-import kr.or.connect.reservation.dto.DisplayInfo;
+import kr.or.connect.reservation.dto.ProductPrice;
 import kr.or.connect.reservation.dto.ReservationInfo;
 import kr.or.connect.reservation.dto.ReservationInfoResponse;
 import kr.or.connect.reservation.service.ReservationService;
@@ -41,4 +46,45 @@ public class ReservationServiceImpl implements ReservationService{
 		
 		return reservationInfoResponse;
 	}
+
+	@Override
+	public String getReserveStartDate() {
+		Calendar cal = Calendar.getInstance();
+		Date date = new Date();
+        cal.setTime(date);
+        SimpleDateFormat formatTime = new SimpleDateFormat("yyyy.MM.dd.(EEE)", Locale.KOREAN);
+        String reserveStartDate = formatTime.format(cal.getTime());
+		return reserveStartDate;
+	}
+
+	@Override
+	public String getReserveEndDate() {
+		Calendar cal = Calendar.getInstance();
+		Date date = new Date();
+        cal.setTime(date);
+        SimpleDateFormat formatTime = new SimpleDateFormat("yyyy.MM.dd.(EEE)", Locale.KOREAN);
+        cal.add(Calendar.DATE, 4);
+        String reserveEndDate = formatTime.format(cal.getTime());
+		return reserveEndDate;
+	}
+
+	@Override
+	public List<ProductPrice> getProductPrices(Integer displayInfoId) {
+		List<ProductPrice> productPrice = reservationDao.getProductPrices(displayInfoId);
+		return productPrice;
+	}
+
+	/*@Override
+	public List<ProductPrice> getFormatPrices(List<ProductPrice> productPrices) {
+
+		for(int i= 0; i < productPrices.size(); i++)
+		{
+			DecimalFormat formatter = new DecimalFormat("###,###.##");
+			int tempPrice = productPrices.get(i).getPrice();
+			tempPrice = Integer.valueOf(formatter.format(tempPrice));
+			productPrices.get(i).setPrice(tempPrice);
+		}
+		
+		return productPrices;
+	}*/
 }

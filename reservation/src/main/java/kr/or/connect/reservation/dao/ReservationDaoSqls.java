@@ -10,4 +10,12 @@ public class ReservationDaoSqls {
 			"join product_price PP on (RIP.product_price_id = PP.id)\r\n" + 
 			"where RI.reservation_email = :reservationEmail";
 	
+	public static final String SELECT_PRODUCT_PRICES = "select PP.id as productPriceId, PP.product_id as productId,\r\n" + 
+			"PP.price_type_name as priceTypeName, PP.price as price,\r\n" + 
+			"PP.discount_rate as discountRate, PP.create_date as createDate,\r\n" + 
+			"PP.modify_date as modifyDate\r\n" + 
+			"from product_price PP\r\n" + 
+			"join product P on (PP.product_id = P.id)\r\n" + 
+			"join display_info DI on (P.id = DI.product_Id)\r\n" + 
+			"where DI.id = :displayInfoId";
 }

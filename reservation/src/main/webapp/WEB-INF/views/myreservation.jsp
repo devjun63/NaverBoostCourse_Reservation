@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -13,18 +15,22 @@
       content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"
     />
     <title>네이버 예약</title>
-    <link href="../style.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
   </head>
 
   <body>
+  <c:if test="${size eq 0 }">
+  	<h1>해당하는 이메일이 없습니다.</h1>
+  </c:if>
+  <h1>사이즈 사이즈 사이즈${size}</h1>
     <div id="container">
       <div class="header">
         <header class="header_tit">
           <h1 class="logo">
-            <a href="./mainpage.html" class="lnk_logo" title="네이버">
+            <a href="./" class="lnk_logo" title="네이버">
               <span class="spr_bi ico_n_logo">네이버</span>
             </a>
-            <a href="./mainpage.html" class="lnk_logo" title="예약">
+            <a href="./" class="lnk_logo" title="예약">
               <span class="spr_bi ico_bk_logo">예약</span>
             </a>
           </h1>

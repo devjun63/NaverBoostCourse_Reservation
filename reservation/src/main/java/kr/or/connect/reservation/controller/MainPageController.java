@@ -95,24 +95,11 @@ public class MainPageController {
 		return map;
 	}
 	
-	@GetMapping(path = "/detail")
-	public String detail(@RequestParam(name="id", required=false, defaultValue="0") Integer displayInfoId, ModelMap model) {
+	
+	
+	@GetMapping(path = "/bookinglogin")
+	public String bookinglogin(){
 		
-		DisplayInfoResponse displayInfoResponse = detailService.getDisplayInfoResponse(displayInfoId);
-		Map<String, Object> map = new HashMap<>();
-		map.put("displayInfo", displayInfoResponse.getDisplayInfo());
-		if(displayInfoResponse.getProductImages().size() > 1) {
-			map.put("etc", "hasEtc");
-		}else {
-			map.put("etc", "notEtc");
-		}
-		map.put("productImages", displayInfoResponse.getProductImages());
-		map.put("displayInfoImage", displayInfoResponse.getDisplayInfoImage());
-		map.put("comments", displayInfoResponse.getComments());
-		map.put("averageScore", (Double)displayInfoResponse.getAverageScore());    
-		map.put("productPrices", displayInfoResponse.getProductPrices());
-		map.put("displayInfoId", displayInfoId);
-		model.addAllAttributes(map);
-		return "detail";
-	} 
+		return "bookinglogin";
+	}
 }

@@ -1,24 +1,20 @@
 package kr.or.connect.reservation.dao;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import kr.or.connect.reservation.config.ApplicationConfig;
-import kr.or.connect.reservation.dto.Category;
-import kr.or.connect.reservation.dto.DisplayInfoResponse;
-import kr.or.connect.reservation.dto.Product;
-import kr.or.connect.reservation.dto.ProductImage;
+import kr.or.connect.reservation.dto.ProductPrice;
 import kr.or.connect.reservation.dto.Promotion;
 import kr.or.connect.reservation.service.DetailService;
 import kr.or.connect.reservation.service.MainPageService;
 import kr.or.connect.reservation.service.ReservationService;
-import kr.or.connect.reservation.service.impl.MainPageServiceImpl;
 
 
 public class getProductsTest {
@@ -31,6 +27,19 @@ public class getProductsTest {
 		MainPageService serviceTest = ac.getBean(MainPageService.class);
 		DetailService detailTest = ac.getBean(DetailService.class);
 		ReservationService reservationService = ac.getBean(ReservationService.class);
+		
+		Calendar cal = Calendar.getInstance();
+		Date date = new Date();
+        cal.setTime(date);
+        SimpleDateFormat formatTime = new SimpleDateFormat("yyyy.MM.dd.(EEE)", Locale.KOREAN);
+        System.out.println("현재 날짜 : " + formatTime.format(cal.getTime()));
+        
+        
+        cal.add(Calendar.DATE, 4);
+        System.out.println("더한 날짜 : " + formatTime.format(cal.getTime()));
+        
+		
+		
 		
 		/*List<Promotion> promotionTestList = new ArrayList<Promotion>(); 
 		List<Category> categoryTestList = new ArrayList<Category>();
@@ -82,5 +91,6 @@ public class getProductsTest {
 		System.out.println(displayInfoResponse.getProductPrices().get(0).getCreateDate());*/
 		
 		System.out.println(reservationService.getReservationInfo("kimjinsu@connect.co.kr"));
+		
 	}
 }
