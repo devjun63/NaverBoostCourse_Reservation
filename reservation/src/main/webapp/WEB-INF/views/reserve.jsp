@@ -46,20 +46,19 @@
 							<c:forEach var="productImages" items="${productImages}"
 								varStatus="status">
 								<c:if test="${status.first eq true}">
-									<li class="item" style="width: 414px"><img alt="${productImages.productId }"
-										class="img_thumb"
-										src="${productImages.saveFileName }" />
-										<span class="img_bg"></span>
+									<li class="item" style="width: 414px"><img
+										alt="${productImages.productId }" class="img_thumb"
+										src="${productImages.saveFileName }" /> <span class="img_bg"></span>
 										<div class="preview_txt">
 											<h2 class="preview_txt_tit">${displayInfo.productDescription }</h2>
-											<em class="preview_txt_dsc">₩
-											<c:forEach var="productPrices" items="${productPrices }" varStatus="priceStatus">
-												<c:if test="${priceStatus.first eq true}">
+											<em class="preview_txt_dsc">₩ <c:forEach
+													var="productPrices" items="${productPrices }"
+													varStatus="priceStatus">
+													<c:if test="${priceStatus.first eq true}">
 													${productPrices.price }
 												</c:if>
-											</c:forEach>
-											 ~ </em><em
-												class="preview_txt_dsc">${reserveStartDate }~${reserveEndDate },
+												</c:forEach> ~
+											</em><em class="preview_txt_dsc">${reserveStartDate }~${reserveEndDate },
 												잔여티켓 2769매</em>
 										</div></li>
 								</c:if>
@@ -71,106 +70,72 @@
 					<div class="store_details">
 						<h3 class="in_tit"></h3>
 						<p class="dsc">
-							장소 : <br /> 기간 : ${reserveStartDate }~${reserveEndDate }
+							장소 : ${displayInfo.placeName }<br /> 기간 : ${reserveStartDate }~${reserveEndDate }
 						</p>
 						<h3 class="in_tit">관람시간</h3>
-						<p class="dsc">
-							화, 목, 금 일요일 10:00am~06:00pm(입장마감 05:30pm)<br /> ‘문화가 있는 날’ 매월
-							마지막 주 수요일은 오후 8시까지 연장
-						</p>
+						<p class="dsc">${displayInfo.openingHours }</p>
 						<h3 class="in_tit">요금</h3>
 						<p class="dsc">
-							성인(만 19~64세) 5,000원 / 청소년(만 13~18세) 4,000원<br /> 어린이(만 4~12세)
-							3,000원 / 20인 이상 단체 20% 할인<br /> 국가유공자, 장애인, 65세 이상 4,000원
+							<c:forEach var="productPrices" items="${productPrices}"
+								varStatus="priceStatus">
+
+								<c:if test="${priceStatus.index eq 0 }">
+									성인(만 19~64세) ${productPrices.price }원 <br />
+								</c:if>
+								<c:if test="${priceStatus.index eq 1 }">
+									어린이(만 4~12세) ${productPrices.price }원 <br />
+								</c:if>
+								<c:if test="${priceStatus.index eq 2 }">
+									20인 이상 단체 20% 할인 / 국가유공자, 장애인, 65세 이상 ${productPrices.price }원 <br />
+								</c:if>
+								<c:if test="${priceStatus.index eq 3 }">
+									청소년(만 13~18세) ${productPrices.price }원
+									</c:if>
+							</c:forEach>
 						</p>
 					</div>
 				</div>
 				<div class="section_booking_ticket">
 					<div class="ticket_body">
-						<div class="qty">
-							<div class="count_control">
-								<!-- [D] 수량이 최소 값이 일때 ico_minus3, count_control_input에 disabled 각각 추가, 수량이 최대 값일 때는 ico_plus3에 disabled 추가 -->
-								<div class="clearfix">
-									<a href="#"
-										class="btn_plus_minus spr_book2 ico_minus3 disabled"
-										title="빼기"> </a> <input type="tel"
-										class="count_control_input disabled" value="0" readonly
-										title="수량" /> <a href="#"
-										class="btn_plus_minus spr_book2 ico_plus3" title="더하기">
-									</a>
+						<c:forEach var="productPrices" items="${productPrices}"
+							varStatus="priceStatus">
+							<div class="qty">
+								<div class="count_control">
+									<!-- [D] 수량이 최소 값이 일때 ico_minus3, count_control_input에 disabled 각각 추가, 수량이 최대 값일 때는 ico_plus3에 disabled 추가 -->
+									<div class="clearfix">
+										<button type="button"
+											class="btn_plus_minus spr_book2 ico_minus3 disabled"
+											title="빼기"></button>
+										<input type="tel" class="count_control_input disabled"
+											value="0" readonly title="수량" />
+										<button type="button"
+											class="btn_plus_minus spr_book2 ico_plus3" title="더하기">
+										</button>
+									</div>
+									<!-- [D] 금액이 0 이상이면 individual_price에 on_color 추가 -->
+									<div class="individual_price">
+										<span class="total_price">0</span><span class="price_type">원</span>
+									</div>
 								</div>
-								<!-- [D] 금액이 0 이상이면 individual_price에 on_color 추가 -->
-								<div class="individual_price">
-									<span class="total_price">0</span><span class="price_type">원</span>
-								</div>
-							</div>
-							<div class="qty_info_icon">
-								<strong class="product_amount"> <span>성인</span>
-								</strong> <strong class="product_price"> <span class="price">10,200</span>
-									<span class="price_type">원</span>
-								</strong> <em class="product_dsc">10,200원 (15% 할인가)</em>
-							</div>
-						</div>
-						<div class="qty">
-							<div class="count_control">
-								<div class="clearfix">
-									<a href="#" class="btn_plus_minus spr_book2 ico_minus3"
-										title="빼기"> </a> <input type="tel"
-										class="count_control_input" value="10" readonly title="수량" />
-									<a href="#" class="btn_plus_minus spr_book2 ico_plus3"
-										title="더하기"> </a>
-								</div>
-								<div class="individual_price on_color">
-									<span class="total_price">68,000</span><span class="price_type">원</span>
-								</div>
-							</div>
-							<div class="qty_info_icon">
-								<strong class="product_amount"> <span>유아</span>
-								</strong> <strong class="product_price"> <span class="price">6,800</span>
-									<span class="price_type">원</span>
-								</strong> <em class="product_dsc">6,800원 (15% 할인가)</em>
-							</div>
-						</div>
-						<div class="qty">
-							<div class="count_control">
-								<div class="clearfix">
-									<a href="#" class="btn_plus_minus spr_book2 ico_minus3"
-										title="빼기"> </a> <input type="tel"
-										class="count_control_input" value="3" readonly title="수량" />
-									<a href="#" class="btn_plus_minus spr_book2 ico_plus3"
-										title="더하기"> </a>
-								</div>
-								<div class="individual_price on_color">
-									<span class="total_price">60,000</span><span class="price_type">원</span>
+								<div class="qty_info_icon">
+									<strong class="product_amount"> <span> <c:if
+												test="${priceStatus.index eq 0 }">
+									성인
+									</c:if> <c:if test="${priceStatus.index eq 1 }">
+									유아
+									</c:if> <c:if test="${priceStatus.index eq 2 }">
+									세트1
+									</c:if> <c:if test="${priceStatus.index eq 3 }">
+									청소년
+									</c:if>
+									</span>
+									</strong> <strong class="product_price"> <span class="price">${productPrices.price }</span>
+										<span class="price_type">원</span>
+									</strong> <em class="product_dsc">${productPrices.price - (productPrices.price * (productPrices.discountRate * 0.01))}원
+										(${productPrices.discountRate }% 할인가)</em>
 								</div>
 							</div>
-							<div class="qty_info_icon">
-								<strong class="product_amount"> <span>세트1</span>
-								</strong> <strong class="product_price"> <span class="price">20,000</span>
-									<span class="price_type">원</span>
-								</strong> <em class="product_dsc">2인 관람권 (17% 할인가)</em>
-							</div>
-						</div>
-						<div class="qty">
-							<div class="count_control">
-								<div class="clearfix">
-									<a href="#" class="btn_plus_minus spr_book2 ico_minus3"
-										title="빼기"> </a> <input type="tel"
-										class="count_control_input" value="3" readonly title="수량" />
-									<a href="#" class="btn_plus_minus spr_book2 ico_plus3"
-										title="더하기"> </a>
-								</div>
-								<div class="individual_price on_color">
-									<span class="total_price">25,500</span><span class="price_type">원</span>
-								</div>
-							</div>
-							<div class="qty_info_icon">
-								<strong class="product_amount"> <span>청소년</span>
-								</strong> <strong class="product_price"> <span class="price">8,500</span>
-									<span class="price_type">원</span>
-								</strong> <em class="product_dsc">8,500원 (15% 할인가)</em>
-							</div>
-						</div>
+						</c:forEach>
 					</div>
 				</div>
 				<div class="section_booking_form">
@@ -213,7 +178,7 @@
 									<label class="label" for="message">예매내용</label>
 									<div class="inline_control">
 										<p class="inline_txt selected">
-											2017.2.17, 총 <span id="totalCount">16</span>매
+											${reserveStartDate }, 총 <span id="totalCount">0</span>매
 										</p>
 									</div>
 								</div>
@@ -234,39 +199,38 @@
 						<div class="agreement">
 							<span class="chk_txt_span"> <i
 								class="spr_book ico_arr_ipc2"></i> <span>개인정보 수집 및 이용 동의</span>
-							</span> <a href="#" class="btn_agreement"> <span class="btn_text">보기</span>
-								<i class="fn fn-down2"></i>
-							</a>
+							</span>
+							<button type="button" class="btn_agreement">
+								<span class="btn_text">보기</span> <i class="fn fn-down2"></i>
+							</button>
 							<div class="useragreement_details">
-								&lt;개인정보 수집 및 이용 동의&gt;<br />
-								<br /> 1. 수집항목 : [필수] 이름, 연락처, [선택] 이메일주소<br />
-								<br /> 2. 수집 및 이용목적 : 사업자회원과 예약이용자의 원활한 거래 진행, 고객상담, 불만처리 등 민원
-								처리, 분쟁조정 해결을 위한 기록보존, 네이버 예약 이용 후 리뷰작성에 따른 네이버페이 포인트 지급 및 관련 안내<br />
-								<br /> 3. 보관기간<br /> - 회원탈퇴 등 개인정보 이용목적 달성 시까지 보관<br /> - 단,
-								상법 및 ‘전자상거래 등에서의 소비자 보호에 관한 법률’ 등 관련 법령에 의하여 일정 기간 보관이 필요한 경우에는
-								해당 기간 동안 보관함<br />
-								<br /> 4. 동의 거부권 등에 대한 고지: 정보주체는 개인정보의 수집 및 이용 동의를 거부할 권리가 있으나,
-								이 경우 상품 및 서비스 예약이 제한될 수 있습니다.<br />
+								&lt;개인정보 수집 및 이용 동의&gt;<br /> <br /> 1. 수집항목 : [필수] 이름, 연락처,
+								[선택] 이메일주소<br /> <br /> 2. 수집 및 이용목적 : 사업자회원과 예약이용자의 원활한 거래
+								진행, 고객상담, 불만처리 등 민원 처리, 분쟁조정 해결을 위한 기록보존, 네이버 예약 이용 후 리뷰작성에 따른
+								네이버페이 포인트 지급 및 관련 안내<br /> <br /> 3. 보관기간<br /> - 회원탈퇴 등 개인정보
+								이용목적 달성 시까지 보관<br /> - 단, 상법 및 ‘전자상거래 등에서의 소비자 보호에 관한 법률’ 등 관련
+								법령에 의하여 일정 기간 보관이 필요한 경우에는 해당 기간 동안 보관함<br /> <br /> 4. 동의 거부권
+								등에 대한 고지: 정보주체는 개인정보의 수집 및 이용 동의를 거부할 권리가 있으나, 이 경우 상품 및 서비스 예약이
+								제한될 수 있습니다.<br />
 							</div>
 						</div>
 						<!-- [D] 약관 보기 클릭 시 agreement에 open 클래스 추가 -->
 						<div class="agreement">
 							<span class="chk_txt_span"> <i
 								class="spr_book ico_arr_ipc2"></i> <span>개인정보 제3자 제공 동의</span>
-							</span> <a href="#" class="btn_agreement"> <span class="btn_text">보기</span>
-								<i class="fn fn-down2"></i>
-							</a>
+							</span>
+							<button type="button" class="btn_agreement">
+								<span class="btn_text">보기</span> <i class="fn fn-down2"></i>
+							</button>
 							<div class="useragreement_details custom_details_wrap">
 								<div class="custom_details">
-									&lt;개인정보 제3자 제공 동의&gt;<br />
-									<br /> 1. 개인정보를 제공받는 자 : 미디어앤아트<br />
+									&lt;개인정보 제3자 제공 동의&gt;<br /> <br /> 1. 개인정보를 제공받는 자 : 미디어앤아트<br />
 									<br /> 2. 제공하는 개인정보 항목 : [필수] 네이버 아이디, 이름, 연락처 [선택] 이메일 주소<br />
 									<br /> 3. 개인정보를 제공받는 자의 이용목적 : 사업자회원과 예약이용자의 원활한 거래 진행, 고객상담,
 									불만처리 등 민원 처리, 서비스 이용에 따른 설문조사 및 혜택 제공, 분쟁조정 해결을 위한 기록보존<br />
 									<br /> 4. 개인정보를 제공받는 자의 개인정보 보유 및 이용기간 : 개인정보 이용목적 달성 시 까지
-									보관합니다.<br />
-									<br /> 5. 동의 거부권 등에 대한 고지 : 정보주체는 개인정보 제공 동의를 거부할 권리가 있으나, 이
-									경우 상품 및 서비스 예약이 제한될 수 있습니다.<br />
+									보관합니다.<br /> <br /> 5. 동의 거부권 등에 대한 고지 : 정보주체는 개인정보 제공 동의를
+									거부할 권리가 있으나, 이 경우 상품 및 서비스 예약이 제한될 수 있습니다.<br />
 								</div>
 							</div>
 						</div>
@@ -294,5 +258,97 @@
 			<span class="copyright">© NAVER Corp.</span>
 		</div>
 	</footer>
+	<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', () => {
+		function addComma(num) {
+			  var regexp = /\B(?=(\d{3})+(?!\d))/g;
+			  return num.toString().replace(regexp, ',');
+			}
+		var product_dscs = document.querySelectorAll(".product_dsc");
+		for(var i = 0; i < product_dscs.length; i++){
+			var each_dsc = product_dscs[i].innerHTML;
+			addComma(each_dsc);
+			console.log(each_dsc);
+		}
+	});
+	
+	var totalCount = document.querySelector("#totalCount");
+	var qty = document.querySelectorAll('.qty');
+	for(var i = 0; i <qty.length; i++){
+		var each_qty = qty[i];
+		
+		each_qty.addEventListener('click', function(evt){
+			// 예매 내용의 totalCount 값 변동 & individual_price의 값 변동
+			var target = evt.target;
+			if(target.classList.contains('ico_plus3')){
+				const plus_count = target.previousElementSibling.value;
+				if(plus_count == "0"){
+					target.previousElementSibling.classList.remove('disabled');
+				}
+				const plus_result = parseInt(plus_count) + 1;
+				target.previousElementSibling.value = plus_result;
+				
+			}else if(target.classList.contains('ico_minus3')){
+				const minus_count = target.nextElementSibling.value;
+				if(minus_count != '0'){
+					const minus_result = parseInt(minus_count) - 1;
+					target.nextElementSibling.value	 = minus_result;
+					console.log(minus_result)
+					if(minus_result == 0){
+						target.nextElementSibling.classList.add('disabled');
+					}
+				}
+			}
+		});
+	}
+	
+	
+	
+	var agreement_btns = document.querySelectorAll('.btn_agreement');
+		for (var i = 0; i < agreement_btns.length; i++) {
+			var each_btn = agreement_btns[i];
+
+			each_btn.addEventListener('click', function(evt) {
+				var target = evt.target;
+				if (target.tagName == "BUTTON") {
+					if (!target.parentNode.classList.contains('open')) {
+						target.parentNode.classList.add('open')
+					} else if (target.parentNode.classList.contains('open')) {
+						target.parentNode.classList.remove('open')
+					}
+				} else {
+					if (!target.parentNode.parentNode.classList
+							.contains('open')) {
+						target.parentNode.parentNode.classList.add('open')
+					} else if (target.parentNode.parentNode.classList
+							.contains('open')) {
+						target.parentNode.parentNode.classList.remove('open')
+					}
+				}
+			}, false);
+		}
+
+		/* btn_agreement.addEventListener("click", function(evt) {
+			var target = evt.target;
+			if(!target.parentNode.parentNode.classList.contains('open')){
+				target.parentNode.parentNode.classList.add('open')
+			}else if(target.parentNode.parentNode.classList.contains('open')){
+				target.parentNode.parentNode.classList.remove('open')
+			}
+		}); */
+
+		/* var buttons = document.querySelectorAll('.btn-click-me');
+		for (var i = 0; i < buttons.length; i++) {
+		    var self = buttons[i];
+
+		    self.addEventListener('click', function (event) {  
+		        // prevent browser's default action
+		        event.preventDefault();
+
+		        // call your awesome function here
+		        MyAwesomeFunction(this); // 'this' refers to the current button on for loop
+		    }, false);
+		} */
+	</script>
 </body>
 </html>
