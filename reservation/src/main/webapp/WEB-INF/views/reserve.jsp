@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -129,10 +130,15 @@
 									청소년
 									</c:if>
 									</span>
-									</strong> <strong class="product_price"> <span class="price">${productPrices.price }</span>
-										<span class="price_type">원</span>
-									</strong> <em class="product_dsc">${productPrices.price - (productPrices.price * (productPrices.discountRate * 0.01))}원
-										(${productPrices.discountRate }% 할인가)</em>
+
+									</strong> <strong class="product_price"> <span class="price"><fmt:formatNumber
+												type="number" maxFractionDigits="3"
+												value="${productPrices.price }" /></span> <span class="price_type">원</span>
+									</strong> <em class="product_dsc"> <c:set var="price"
+											value="${productPrices.price - (productPrices.price * (productPrices.discountRate * 0.01))}" />
+										<fmt:formatNumber type="number" maxFractionDigits="3"
+											value="${price}" /> 원 (${productPrices.discountRate }% 할인가)
+									</em>
 								</div>
 							</div>
 						</c:forEach>
@@ -145,7 +151,7 @@
 							<div class="agreement_nessasary help_txt">
 								<span class="spr_book ico_nessasary"></span> <span>필수입력</span>
 							</div>
-							<form class="form_horizontal">
+							<form class="form_horizontal" action="./reserve" method="post">
 								<div class="inline_form">
 									<label class="label" for="name"> <span
 										class="spr_book ico_nessasary">필수</span> <span>예매자</span>
@@ -153,6 +159,7 @@
 									<div class="inline_control">
 										<input type="text" name="name" id="name" class="text"
 											placeholder="네이버" maxlength="17" />
+											<div class="warning_msg">형식에 틀렸거나 너무 짧아요</div>
 									</div>
 								</div>
 								<div class="inline_form">
@@ -161,7 +168,7 @@
 									</label>
 									<div class="inline_control tel_wrap">
 										<input type="tel" name="tel" id="tel" class="tel" value=""
-											placeholder="휴대폰 입력 시 예매내역 문자발송" />
+											placeholder="휴대폰 입력 시 예매내역 문자발송" maxlength="17"/>
 										<div class="warning_msg">형식이 틀렸거나 너무 짧아요</div>
 									</div>
 								</div>
@@ -172,13 +179,14 @@
 									<div class="inline_control">
 										<input type="email" name="email" id="email" class="email"
 											value="" placeholder="crong@codesquad.kr" maxlength="50" />
+											<div class="warning_msg">이메일 양식에 맞게 적어주세요.</div>
 									</div>
 								</div>
 								<div class="inline_form last">
 									<label class="label" for="message">예매내용</label>
 									<div class="inline_control">
 										<p class="inline_txt selected">
-											${reserveStartDate }, 총 <span id="totalCount">0</span>매
+											${reserveRandomDate }, 총 <span id="totalCount">0</span>매
 										</p>
 									</div>
 								</div>
@@ -259,7 +267,7 @@
 		</div>
 	</footer>
 	<script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', () => {
+	/* document.addEventListener('DOMContentLoaded', () => {
 		function addComma(num) {
 			  var regexp = /\B(?=(\d{3})+(?!\d))/g;
 			  return num.toString().replace(regexp, ',');
@@ -270,7 +278,7 @@
 			addComma(each_dsc);
 			console.log(each_dsc);
 		}
-	});
+	}); */
 	
 	var totalCount = document.querySelector("#totalCount");
 	var qty = document.querySelectorAll('.qty');
@@ -280,19 +288,42 @@
 		each_qty.addEventListener('click', function(evt){
 			// 예매 내용의 totalCount 값 변동 & individual_price의 값 변동
 			var target = evt.target;
+			
 			if(target.classList.contains('ico_plus3')){
 				const plus_count = target.previousElementSibling.value;
+				let discount_price_text = target.parentNode.parentNode.parentNode.children[1].children[2].innerText;
+				let total_price = target.parentNode.parentNode.children[1].children[0];
+				let discount_price = discount_price_text.split('원');
+				let price = parseInt(discount_price[0].replace(/[^0-9]/g,''));
+				let tempcount = total_price.innerText;
+				total_price.innerHTML = price + parseInt(tempcount);
+				
+				var totalCountvalue = totalCount.innerHTML;
 				if(plus_count == "0"){
 					target.previousElementSibling.classList.remove('disabled');
 				}
 				const plus_result = parseInt(plus_count) + 1;
 				target.previousElementSibling.value = plus_result;
+				totalCountvalue = parseInt(totalCountvalue) + 1;
+				totalCount.innerHTML = totalCountvalue;
 				
 			}else if(target.classList.contains('ico_minus3')){
 				const minus_count = target.nextElementSibling.value;
+				var totalCountvalue = totalCount.innerHTML;
+
+				let discount_price_text = target.parentNode.parentNode.parentNode.children[1].children[2].innerText;
+				let total_price = target.parentNode.parentNode.children[1].children[0];
+				let discount_price = discount_price_text.split('원');
+				let price = parseInt(discount_price[0].replace(/[^0-9]/g,''));
+				let tempcount = total_price.innerText;
+				total_price.innerHTML = parseInt(tempcount) - price;
+				
+				
 				if(minus_count != '0'){
 					const minus_result = parseInt(minus_count) - 1;
 					target.nextElementSibling.value	 = minus_result;
+					totalCountvalue = parseInt(totalCountvalue) -1;
+					totalCount.innerHTML = totalCountvalue;
 					console.log(minus_result)
 					if(minus_result == 0){
 						target.nextElementSibling.classList.add('disabled');
@@ -301,9 +332,7 @@
 			}
 		});
 	}
-	
-	
-	
+
 	var agreement_btns = document.querySelectorAll('.btn_agreement');
 		for (var i = 0; i < agreement_btns.length; i++) {
 			var each_btn = agreement_btns[i];
@@ -328,6 +357,59 @@
 			}, false);
 		}
 
+		var form_horizontal = document.querySelector(".form_horizontal");
+		form_horizontal.addEventListener('change', function(evt){
+			if(evt.target.classList.contains('tel')){
+				const tel_regExp = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+				const tel_value = evt.target.value;
+				const warning_msg = evt.target.parentNode.children[1];
+				console.log(evt.target.value);
+				if(!tel_regExp.test(tel_value)){
+					evt.target.focus();
+					warning_msg.style.visibility="visible";
+					setTimeout(function() {
+						warning_msg.style.visibility="hidden";
+					}, 1000);
+				}
+			}else if(evt.target.classList.contains('text')){
+				const name_regExp = /^[가-힣a-z0-9_]{2,12}$/;
+				const name_value = evt.target.value;
+				const warning_msg = evt.target.parentNode.children[1];
+				console.log(evt.target.value);
+				if(!name_regExp.test(name_value)){
+					evt.target.focus();
+					warning_msg.style.visibility="visible";
+					setTimeout(function() {
+						warning_msg.style.visibility="hidden";
+					}, 1000);
+				}
+			}else if(evt.target.classList.contains('email')){
+				const email_regExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+				const email_value = evt.target.value;
+				const warning_msg = evt.target.parentNode.children[1];
+				console.log(evt.target.value);
+				if(!email_regExp.test(email_value)){
+					evt.target.focus();
+					warning_msg.style.visibility="visible";
+					setTimeout(function() {
+						warning_msg.style.visibility="hidden";
+					}, 1000);
+				}
+			}
+		});
+		
+		
+		
+		
+		/* form_horizontal.addEventListener('click', function(evt){
+			console.log(evt.target.classList);
+		}); */
+		/* 
+		 */
+
+
+		
+		
 		/* btn_agreement.addEventListener("click", function(evt) {
 			var target = evt.target;
 			if(!target.parentNode.parentNode.classList.contains('open')){

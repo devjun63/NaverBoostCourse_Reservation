@@ -8,7 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.google.protobuf.Method;
 
 import kr.or.connect.reservation.dto.DisplayInfoResponse;
 import kr.or.connect.reservation.dto.ProductPrice;
@@ -51,6 +56,7 @@ public class ReservationController {
 		List<ProductPrice> productPrices = reservationService.getProductPrices(displayInfoId);
 		String reserveStartDate = reservationService.getReserveStartDate();
 		String reserveEndDate = reservationService.getReserveEndDate();
+		String reserveRandomDate = reservationService.getReserveRandomDate();
 		
 		map.put("displayInfoId", displayInfoId);
 		map.put("productImages", displayInfoResponse.getProductImages());
@@ -58,8 +64,15 @@ public class ReservationController {
 		map.put("productPrices", productPrices);
         map.put("reserveStartDate", reserveStartDate);
         map.put("reserveEndDate", reserveEndDate);
-		
+		map.put("reserveRandomDate", reserveRandomDate);
+        
         model.addAllAttributes(map);
 		return "reserve";
+	}
+	
+	@PostMapping(value="/reserve")
+	public String reserve() {
+		
+		return "redirect:./";
 	}
 }

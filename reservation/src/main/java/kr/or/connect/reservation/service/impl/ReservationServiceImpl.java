@@ -52,7 +52,7 @@ public class ReservationServiceImpl implements ReservationService{
 		Calendar cal = Calendar.getInstance();
 		Date date = new Date();
         cal.setTime(date);
-        SimpleDateFormat formatTime = new SimpleDateFormat("yyyy.MM.dd.(EEE)", Locale.KOREAN);
+        SimpleDateFormat formatTime = new SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN);
         String reserveStartDate = formatTime.format(cal.getTime());
 		return reserveStartDate;
 	}
@@ -62,8 +62,19 @@ public class ReservationServiceImpl implements ReservationService{
 		Calendar cal = Calendar.getInstance();
 		Date date = new Date();
         cal.setTime(date);
-        SimpleDateFormat formatTime = new SimpleDateFormat("yyyy.MM.dd.(EEE)", Locale.KOREAN);
+        SimpleDateFormat formatTime = new SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN); //"yyyy.MM.dd.(EEE)" -> 연.월.일.(요일)
         cal.add(Calendar.DATE, 4);
+        String reserveEndDate = formatTime.format(cal.getTime());
+		return reserveEndDate;
+	}
+	
+	@Override
+	public String getReserveRandomDate() {
+		Calendar cal = Calendar.getInstance();
+		Date date = new Date();
+        cal.setTime(date);
+        SimpleDateFormat formatTime = new SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN); //"yyyy.MM.dd.(EEE)" -> 연.월.일.(요일)
+        cal.add(Calendar.DATE, (int)((Math.random() * 5)+1));
         String reserveEndDate = formatTime.format(cal.getTime());
 		return reserveEndDate;
 	}

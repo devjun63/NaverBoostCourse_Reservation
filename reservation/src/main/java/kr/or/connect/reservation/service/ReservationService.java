@@ -9,6 +9,7 @@ public interface ReservationService {
 	public ReservationInfoResponse getReservationInfo (String reservationEmail);
 	public String getReserveStartDate();
 	public String getReserveEndDate();
+	public String getReserveRandomDate();
 	public List<ProductPrice> getProductPrices(Integer displayInfoId);
 	/*public List<ProductPrice> getFormatPrices(List<ProductPrice> productPrices);*/
 }

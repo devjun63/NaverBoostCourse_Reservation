@@ -1358,6 +1358,7 @@ button {
   width: 100%;
   display: inline-block;
   float: left;
+  position: relative;
 }
 
 .form_horizontal .inline_form .inline_control input[type="text"],
@@ -1387,11 +1388,26 @@ button {
 }
 
 /* added by crong. */
-.form_horizontal .inline_form .inline_control.tel_wrap {
+
+/* .form_horizontal .inline_form .inline_control.tel_wrap {
   position: relative;
-}
+} */
 
 .form_horizontal .inline_form .inline_control.tel_wrap .warning_msg {
+  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ffffff;
+  visibility: hidden;
+  height: 26px;
+  line-height: 26px;
+  width: 98%;
+  color: red;
+  padding-left: 10px;
+}
+/* my css */
+.form_horizontal .inline_form .inline_control .warning_msg{
   position: relative;
   position: absolute;
   top: 0;
