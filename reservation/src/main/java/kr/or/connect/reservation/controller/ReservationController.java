@@ -9,15 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.google.protobuf.Method;
 
 import kr.or.connect.reservation.dto.DisplayInfoResponse;
 import kr.or.connect.reservation.dto.ProductPrice;
 import kr.or.connect.reservation.dto.ReservationInfoResponse;
+import kr.or.connect.reservation.dto.ReservationParam;
 import kr.or.connect.reservation.service.DetailService;
 import kr.or.connect.reservation.service.ReservationService;
 
@@ -26,13 +24,13 @@ public class ReservationController {
 
 	@Autowired
 	ReservationService reservationService;
-	
+
 	@Autowired
 	DetailService detailService;
-	
+
 	@GetMapping("/myreservation")
 	public String myreservation(@RequestParam(name="resrv_email", required=true)String reservationEmail, ModelMap model) {
-		
+
 		ReservationInfoResponse reservationInfoResponse = reservationService.getReservationInfo(reservationEmail);
 		Map<String, Object> map = new HashMap<>();
 		if(reservationInfoResponse == null) {
@@ -44,7 +42,7 @@ public class ReservationController {
 		model.addAllAttributes(map);
 		return "myreservation";
 	}
-	
+
 	@GetMapping("/reservePage")
 	public String reservePage(@RequestParam(name="id", required=true) Integer displayInfoId, ModelMap model) {
 		Map<String, Object> map = new HashMap<>();
@@ -57,22 +55,42 @@ public class ReservationController {
 		String reserveStartDate = reservationService.getReserveStartDate();
 		String reserveEndDate = reservationService.getReserveEndDate();
 		String reserveRandomDate = reservationService.getReserveRandomDate();
-		
+
 		map.put("displayInfoId", displayInfoId);
 		map.put("productImages", displayInfoResponse.getProductImages());
 		map.put("displayInfo", displayInfoResponse.getDisplayInfo());
 		map.put("productPrices", productPrices);
-        map.put("reserveStartDate", reserveStartDate);
-        map.put("reserveEndDate", reserveEndDate);
+		map.put("reserveStartDate", reserveStartDate);
+		map.put("reserveEndDate", reserveEndDate);
 		map.put("reserveRandomDate", reserveRandomDate);
-        
-        model.addAllAttributes(map);
+
+		model.addAllAttributes(map);
 		return "reserve";
 	}
-	
+
 	@PostMapping(value="/reserve")
-	public String reserve() {
+	public String reserve(@RequestBody ReservationParam param) throws Exception{
+		/*
 		
+		param.getDisplayInfoId()
+		param.getPrices()
+		param.getProductId()
+		param.getReservationYearMonthDay()
+		
+		name으로 넘어옴
+		param.getReservationEmail
+		param.getReservationName
+		param.getReservationTelephone
+		
+		*/
+		/*
+		
+		param.getPrices().get(0).getCount();
+		param.getPrices().get(0).getProductPriceId();
+		param.getPrices().get(0).getReservationInfoId();
+		param.getPrices().get(0).getReservationInfoPriceId();
+		
+		*/
 		return "redirect:./";
 	}
 }

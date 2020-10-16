@@ -159,7 +159,7 @@
 									<div class="inline_control">
 										<input type="text" name="name" id="name" class="text"
 											placeholder="네이버" maxlength="17" />
-											<div class="warning_msg">형식에 틀렸거나 너무 짧아요</div>
+										<div class="warning_msg">형식에 틀렸거나 너무 짧아요</div>
 									</div>
 								</div>
 								<div class="inline_form">
@@ -168,7 +168,7 @@
 									</label>
 									<div class="inline_control tel_wrap">
 										<input type="tel" name="tel" id="tel" class="tel" value=""
-											placeholder="휴대폰 입력 시 예매내역 문자발송" maxlength="17"/>
+											placeholder="휴대폰 입력 시 예매내역 문자발송" maxlength="17" />
 										<div class="warning_msg">형식이 틀렸거나 너무 짧아요</div>
 									</div>
 								</div>
@@ -179,7 +179,7 @@
 									<div class="inline_control">
 										<input type="email" name="email" id="email" class="email"
 											value="" placeholder="crong@codesquad.kr" maxlength="50" />
-											<div class="warning_msg">이메일 양식에 맞게 적어주세요.</div>
+										<div class="warning_msg">이메일 양식에 맞게 적어주세요.</div>
 									</div>
 								</div>
 								<div class="inline_form last">
@@ -249,6 +249,7 @@
 					<div class="bk_btn_wrap disable">
 						<button type="button" class="bk_btn">
 							<i class="spr_book ico_naver_s"></i> <span>예약하기</span>
+							<div class="warning_msg">입력값을 다시 작성해주세요.</div>
 						</button>
 					</div>
 				</div>
@@ -267,18 +268,63 @@
 		</div>
 	</footer>
 	<script type="text/javascript">
-	/* document.addEventListener('DOMContentLoaded', () => {
-		function addComma(num) {
-			  var regexp = /\B(?=(\d{3})+(?!\d))/g;
-			  return num.toString().replace(regexp, ',');
-			}
-		var product_dscs = document.querySelectorAll(".product_dsc");
-		for(var i = 0; i < product_dscs.length; i++){
-			var each_dsc = product_dscs[i].innerHTML;
-			addComma(each_dsc);
-			console.log(each_dsc);
+	
+	var form_horizontal = document.querySelector(".form_horizontal");
+	var bk_btn_wrap = document.querySelector(".bk_btn_wrap");
+	var chk_txt_label = document.querySelector(".chk_txt_label");
+	var name_txt = document.querySelector(".text");
+	var tel = document.querySelector(".tel");
+	var email = document.querySelector(".email");
+	
+	
+	chk_txt_label.addEventListener("click", function(evt){
+		if(bk_btn_wrap.classList.contains("disable")){
+			bk_btn_wrap.classList.remove("disable");
+		}else{
+			bk_btn_wrap.classList.add("disable");
 		}
-	}); */
+	});
+	bk_btn_wrap.addEventListener("click", function(evt){
+		const check_name = /^[가-힣a-z0-9_]{2,12}$/;
+		const check_tel = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+		const check_email = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+		const name_val = name_txt.value;
+		const tel_val = tel.value;
+		const email_val = email.value;
+		if(!bk_btn_wrap.classList.contains("disable")){
+			if((check_name.test(name_val))&&(check_tel.test(tel_val))&&(check_email.test(email_val))){
+				//ajax로 값 다시 담아서 보내야함
+				console.log("입력값 정상");
+				form_horizontal.submit();
+			}else{
+				if(evt.target.tagName === "I" || evt.target.tagName === "SPAN"){
+					evt.target.focus();
+					evt.target.parentNode.children[2].style.visibility="visible";
+					setTimeout(function() {
+						evt.target.parentNode.children[2].style.visibility="hidden";
+					}, 1000);
+				}else{
+					evt.target.focus();
+					evt.target.children[2].style.visibility="visible";
+					setTimeout(function() {
+						evt.target.children[2].style.visibility="hidden";
+					}, 1000);
+				}
+			}
+		}
+		
+		
+		/* .parentNode.children[1];
+		if(!email_regExp.test(email_value)){
+			evt.target.focus();
+			warning_msg.style.visibility="visible";
+			setTimeout(function() {
+				warning_msg.style.visibility="hidden";
+			}, 1000);
+		} */
+		
+	});
+	
 	
 	var totalCount = document.querySelector("#totalCount");
 	var qty = document.querySelectorAll('.qty');
@@ -357,7 +403,8 @@
 			}, false);
 		}
 
-		var form_horizontal = document.querySelector(".form_horizontal");
+		
+		
 		form_horizontal.addEventListener('change', function(evt){
 			if(evt.target.classList.contains('tel')){
 				const tel_regExp = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
@@ -398,7 +445,34 @@
 			}
 		});
 		
+		function compare_regexp(inputValue){
+			this.form_horizontal = inputValue;
+			this.registerEvents();
+		}
 		
+		/* RegExp.prototype = {
+			registerEvents : function () {
+				this.tabmenu.addEventListener("change", function (evt) {
+					const value = evt.target.value;
+					const warning_msg = evt.target.parentNode.children[1];
+					let regExp;
+					if(evt.target.classList.contains('text')){
+						regExp = /^[가-힣a-z0-9_]{2,12}$/;
+					}else if(evt.target.classList.contains('tel')){
+						regExp = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+					}else if(evt.target.classList.contains('email')){
+						regExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+					}
+					if(!regExp.test(value)){
+						evt.target.focus();
+						warning_msg.style.visibility="visible";
+						setTimeout(function() {
+							warning_msg.style.visibility="hidden";
+						}, 1000);
+					}
+				}.bind(this));
+			}
+		} */
 		
 		
 		/* form_horizontal.addEventListener('click', function(evt){

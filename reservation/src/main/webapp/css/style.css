@@ -824,6 +824,23 @@ button {
   box-sizing: border-box;
 }
 
+/* my_css */
+.bk_btn .warning_msg{
+  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ffffff;
+  visibility: hidden;
+  height: 50px;
+  line-height: 26px;
+  width: 100%;
+  color: red;
+  padding-left: 10px;
+  padding-top: 20px;
+}
+
+
 .box_bk_btn {
   width: 100%;
   -webkit-box-sizing: border-box;
