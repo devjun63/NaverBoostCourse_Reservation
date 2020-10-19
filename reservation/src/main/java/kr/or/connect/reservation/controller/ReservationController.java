@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.connect.reservation.dto.DisplayInfoResponse;
 import kr.or.connect.reservation.dto.ProductPrice;
 import kr.or.connect.reservation.dto.ReservationInfoResponse;
 import kr.or.connect.reservation.dto.ReservationParam;
+import kr.or.connect.reservation.dto.ReservationResponse;
 import kr.or.connect.reservation.service.DetailService;
 import kr.or.connect.reservation.service.ReservationService;
 
@@ -52,11 +54,13 @@ public class ReservationController {
 		// 일단은 기존 서비스에 존재하는 메서드를 차용해서 진행 후 리팩토링
 		DisplayInfoResponse displayInfoResponse = detailService.getDisplayInfoResponse(displayInfoId);
 		List<ProductPrice> productPrices = reservationService.getProductPrices(displayInfoId);
+		String productId = String.valueOf((displayInfoResponse.getDisplayInfo().getProductId()));
 		String reserveStartDate = reservationService.getReserveStartDate();
 		String reserveEndDate = reservationService.getReserveEndDate();
 		String reserveRandomDate = reservationService.getReserveRandomDate();
-
+		
 		map.put("displayInfoId", displayInfoId);
+		map.put("productId", productId);
 		map.put("productImages", displayInfoResponse.getProductImages());
 		map.put("displayInfo", displayInfoResponse.getDisplayInfo());
 		map.put("productPrices", productPrices);
@@ -68,29 +72,9 @@ public class ReservationController {
 		return "reserve";
 	}
 
-	@PostMapping(value="/reserve")
-	public String reserve(@RequestBody ReservationParam param) throws Exception{
-		/*
-		
-		param.getDisplayInfoId()
-		param.getPrices()
-		param.getProductId()
-		param.getReservationYearMonthDay()
-		
-		name으로 넘어옴
-		param.getReservationEmail
-		param.getReservationName
-		param.getReservationTelephone
-		
-		*/
-		/*
-		
-		param.getPrices().get(0).getCount();
-		param.getPrices().get(0).getProductPriceId();
-		param.getPrices().get(0).getReservationInfoId();
-		param.getPrices().get(0).getReservationInfoPriceId();
-		
-		*/
-		return "redirect:./";
+	
+	@PostMapping(path = "/reserve")
+	public ReservationResponse setReservations(@RequestBody ReservationParam param){
+		 return reservationService.setReservation(param);
 	}
 }

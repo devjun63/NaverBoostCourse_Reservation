@@ -100,6 +100,9 @@
 					<div class="ticket_body">
 						<c:forEach var="productPrices" items="${productPrices}"
 							varStatus="priceStatus">
+							<input type="hidden"
+								name="prices[${priceStatus.index}].productPriceId"
+								value="${productPrices.productPriceId }">
 							<div class="qty">
 								<div class="count_control">
 									<!-- [D] 수량이 최소 값이 일때 ico_minus3, count_control_input에 disabled 각각 추가, 수량이 최대 값일 때는 ico_plus3에 disabled 추가 -->
@@ -108,7 +111,8 @@
 											class="btn_plus_minus spr_book2 ico_minus3 disabled"
 											title="빼기"></button>
 										<input type="tel" class="count_control_input disabled"
-											value="0" readonly title="수량" />
+											value="0" name="prices[${priceStatus.index}].count" readonly
+											title="수량" />
 										<button type="button"
 											class="btn_plus_minus spr_book2 ico_plus3" title="더하기">
 										</button>
@@ -157,8 +161,8 @@
 										class="spr_book ico_nessasary">필수</span> <span>예매자</span>
 									</label>
 									<div class="inline_control">
-										<input type="text" name="name" id="name" class="text"
-											placeholder="네이버" maxlength="17" />
+										<input type="text" name="reservationName" id="name"
+											class="text" placeholder="네이버" maxlength="17" />
 										<div class="warning_msg">형식에 틀렸거나 너무 짧아요</div>
 									</div>
 								</div>
@@ -167,8 +171,9 @@
 										class="spr_book ico_nessasary">필수</span> <span>연락처</span>
 									</label>
 									<div class="inline_control tel_wrap">
-										<input type="tel" name="tel" id="tel" class="tel" value=""
-											placeholder="휴대폰 입력 시 예매내역 문자발송" maxlength="17" />
+										<input type="tel" name="reservationTelephone" id="tel"
+											class="tel" value="" placeholder="휴대폰 입력 시 예매내역 문자발송"
+											maxlength="17" />
 										<div class="warning_msg">형식이 틀렸거나 너무 짧아요</div>
 									</div>
 								</div>
@@ -177,8 +182,9 @@
 										class="spr_book ico_nessasary">필수</span> <span>이메일</span>
 									</label>
 									<div class="inline_control">
-										<input type="email" name="email" id="email" class="email"
-											value="" placeholder="crong@codesquad.kr" maxlength="50" />
+										<input type="email" name="reservationEmail" id="email"
+											class="email" value="" placeholder="crong@codesquad.kr"
+											maxlength="50" />
 										<div class="warning_msg">이메일 양식에 맞게 적어주세요.</div>
 									</div>
 								</div>
@@ -186,6 +192,11 @@
 									<label class="label" for="message">예매내용</label>
 									<div class="inline_control">
 										<p class="inline_txt selected">
+											<input type="hidden" class="d_id" name="displayInfoId"
+												value="${displayInfoId }"> <input type="hidden"
+												class="p_id" name="productId" value="${productId }">
+											<input type="hidden" class="r_ymd"
+												name="reservationYearMonthDay" value="${reserveRandomDate }">
 											${reserveRandomDate }, 총 <span id="totalCount">0</span>매
 										</p>
 									</div>
@@ -293,9 +304,57 @@
 		const email_val = email.value;
 		if(!bk_btn_wrap.classList.contains("disable")){
 			if((check_name.test(name_val))&&(check_tel.test(tel_val))&&(check_email.test(email_val))){
-				//ajax로 값 다시 담아서 보내야함
-				console.log("입력값 정상");
-				form_horizontal.submit();
+				
+				
+				const displayInfoId = document.querySelector(".d_id").value;
+		        var reservationprices = [];
+		        var count_control = document.querySelectorAll('.count_control_input');
+		        for(let i = 0; i <count_control.length; i++){
+		        	
+		        	let prices = {count : 0, productPriceId : 0, reservationInfoId : 0, reservationInfoPriceId : 0};
+		        	var counts = document.querySelector('input[name="prices['+i+'].count"]');
+		        	var tempProductPriceid = document.querySelector('input[name="prices['+i+'].productPriceId"]');
+		        	
+		        	prices.count = counts.value;
+		        	prices.productPriceId = tempProductPriceid.value;
+		        	prices.reservationInfoId = 0 ;
+		        	prices.reservationInfoPriceId = 0;
+		        	
+		        	reservationprices.push(prices);
+		        }
+		        
+		        const productId = document.querySelector(".p_id").value;
+		        const reservationEmail = email_val;
+		        const reservationName = name_val;
+		        const reservationTelephone = tel_val;
+		        const reservationYearMonthDay = document.querySelector(".r_ymd").value;
+		        
+		        var url = "/reservation/reserve";
+		        var params = {
+		        	  "displayInfoId": displayInfoId,
+		        	  "prices": reservationprices,
+		        	  "productId": productId,
+		        	  "reservationEmail": reservationEmail,
+		        	  "reservationName": reservationName,
+		        	  "reservationTelephone": reservationTelephone,
+		        	  "reservationYearMonthDay": reservationYearMonthDay
+		        	};
+				var data = JSON.stringify(params);
+				function sendAjax(url){
+					var oReq = new XMLHttpRequest();
+					oReq.open("POST", url);	// method: POST
+					oReq.setRequestHeader("Content-Type", "application/json"); // Content-Type: json
+					oReq.responseType = "text";		// text for json
+					oReq.addEventListener("load", function () { // when success
+						/* console.log("성공 : "+this); */
+						location.href = "/reservation";
+					});
+					oReq.send(data);
+					
+				}
+				
+				sendAjax(url);
+		
 			}else{
 				if(evt.target.tagName === "I" || evt.target.tagName === "SPAN"){
 					evt.target.focus();
@@ -370,7 +429,7 @@
 					target.nextElementSibling.value	 = minus_result;
 					totalCountvalue = parseInt(totalCountvalue) -1;
 					totalCount.innerHTML = totalCountvalue;
-					console.log(minus_result)
+					
 					if(minus_result == 0){
 						target.nextElementSibling.classList.add('disabled');
 					}
@@ -410,7 +469,7 @@
 				const tel_regExp = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
 				const tel_value = evt.target.value;
 				const warning_msg = evt.target.parentNode.children[1];
-				console.log(evt.target.value);
+				
 				if(!tel_regExp.test(tel_value)){
 					evt.target.focus();
 					warning_msg.style.visibility="visible";
@@ -422,7 +481,7 @@
 				const name_regExp = /^[가-힣a-z0-9_]{2,12}$/;
 				const name_value = evt.target.value;
 				const warning_msg = evt.target.parentNode.children[1];
-				console.log(evt.target.value);
+				
 				if(!name_regExp.test(name_value)){
 					evt.target.focus();
 					warning_msg.style.visibility="visible";
@@ -434,7 +493,7 @@
 				const email_regExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 				const email_value = evt.target.value;
 				const warning_msg = evt.target.parentNode.children[1];
-				console.log(evt.target.value);
+				
 				if(!email_regExp.test(email_value)){
 					evt.target.focus();
 					warning_msg.style.visibility="visible";
