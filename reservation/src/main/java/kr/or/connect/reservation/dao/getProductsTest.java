@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -37,7 +38,7 @@ public class getProductsTest {
 		cal.setTime(date);
 		SimpleDateFormat formatTime = new SimpleDateFormat("yyyy.MM.dd.(EEE)", Locale.KOREAN);
 		System.out.println("현재 날짜 : " + formatTime.format(cal.getTime()));
-
+		
 
 		cal.add(Calendar.DATE, 4);
 		System.out.println("더한 날짜 : " + formatTime.format(cal.getTime()));
@@ -45,8 +46,8 @@ public class getProductsTest {
 		reservationResponse.setReservationTelephone("010-1234-1234");
 		reservationResponse.setReservationName("아무개");
 		reservationResponse.setReservationEmail("test@gmail.com");
-
-
+		Scanner sc = new Scanner(System.in);
+		sc.nextFloat();
 		String reservationDate = "2020.10.20";
 		SimpleDateFormat beforeFormat = new SimpleDateFormat("yyyy.mm.dd");
 		SimpleDateFormat afterFormat = new SimpleDateFormat("yyyy-mm-dd");
@@ -63,9 +64,6 @@ public class getProductsTest {
 		// 반환된 String 값을 Date로 변경한다.
 		java.sql.Date reserveDate = java.sql.Date.valueOf(transDate); 
 		reservationResponse.setReservationDate(reserveDate);
-
-
-
 
 		reservationResponse.setModifyDate(new Date());
 		reservationResponse.setCreateDate(new Date());

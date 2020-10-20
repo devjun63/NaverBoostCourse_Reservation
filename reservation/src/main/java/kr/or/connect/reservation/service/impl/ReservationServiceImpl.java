@@ -109,8 +109,6 @@ public class ReservationServiceImpl implements ReservationService{
 		reservationResponse.setModifyDate(new Date());
 		reservationResponse.setProductId(param.getProductId());
 		
-		
-		
 		SimpleDateFormat beforeFormat = new SimpleDateFormat("yyyy.mm.dd");
 		SimpleDateFormat afterFormat = new SimpleDateFormat("yyyy-mm-dd");
 		java.util.Date tempDate = null;

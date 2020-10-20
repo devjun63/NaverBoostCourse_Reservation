@@ -30,18 +30,20 @@ public class ReservationController {
 	@Autowired
 	DetailService detailService;
 
-	@GetMapping("/myreservation")
-	public String myreservation(@RequestParam(name="resrv_email", required=true)String reservationEmail, ModelMap model) {
+	@PostMapping(path = "/myreservation")
+	public String myreservation(@RequestBody String reservationEmail) {
 
 		ReservationInfoResponse reservationInfoResponse = reservationService.getReservationInfo(reservationEmail);
 		Map<String, Object> map = new HashMap<>();
 		if(reservationInfoResponse == null) {
 			map.put("size", 0);
+			return "";
 		}else {
+			System.out.println(reservationInfoResponse.getReservations().get(0).getReservationName());
 			map.put("reservations", reservationInfoResponse.getReservations());
 			map.put("size", reservationInfoResponse.getSize());
 		}
-		model.addAllAttributes(map);
+		//model.addAllAttributes(map);
 		return "myreservation";
 	}
 

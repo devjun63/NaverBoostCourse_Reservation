@@ -5,6 +5,7 @@ import static kr.or.connect.reservation.dao.ReservationDaoSqls.SELECT_PRODUCT_PR
 import static kr.or.connect.reservation.dao.ReservationDaoSqls.SELECT_RESERVATION_INFO;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,8 +48,8 @@ public class ReservationDao {
 		this.insertAction = new SimpleJdbcInsert(dataSource)
 				.withTableName("reservation_info")
 				.usingGeneratedKeyColumns("id");
-		SimpleJdbcInsertOperations insertion = new SimpleJdbcInsert(dataSource)
-				.withTableName("reservation_info_price").usingGeneratedKeyColumns("id");
+		/*SimpleJdbcInsertOperations insertion = new SimpleJdbcInsert(dataSource)
+				.withTableName("reservation_info_price").usingGeneratedKeyColumns("id");*/
 	}
 
 	public List<ReservationInfo> getReservations(String reservationEmail) {
@@ -92,11 +93,18 @@ public class ReservationDao {
 	}
 
 	public Integer insertReservationResponse(ReservationResponse reservationResponse) {
-		final String sql = "insert into reservation_info(id, product_id, display_info_id, reservation_name, "
-				+ "reservation_tel, reservation_email, reservation_date, cancel_flag, create_date, modify_date)"
-				+ " values(:reservationInfoId, :productId, :displayInfoId, :reservationName, :reservationTelephone, :reservationEmail,"
-				+ ":reservationDate, :cancelYn, :createDate, :modifyDate)";
-		SqlParameterSource params = new BeanPropertySqlParameterSource(reservationResponse);
-		return jdbc.update(sql, params);
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("product_id", reservationResponse.getProductId());
+		parameters.put("display_info_id", reservationResponse.getDisplayInfoId());
+		parameters.put("reservation_name", reservationResponse.getReservationName());
+		parameters.put("reservation_tel", reservationResponse.getReservationTelephone());
+		parameters.put("reservation_email", reservationResponse.getReservationEmail());
+		parameters.put("reservation_date", reservationResponse.getReservationDate());
+		parameters.put("cancel_flag", reservationResponse.isCancelYn());
+		parameters.put("create_date", reservationResponse.getCreateDate());
+		parameters.put("modify_date", reservationResponse.getModifyDate());
+		return insertAction.executeAndReturnKey(parameters).intValue();
+		
+		
 	}
 }

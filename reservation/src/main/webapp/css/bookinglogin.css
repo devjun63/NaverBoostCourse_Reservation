@@ -1,10 +1,10 @@
 @charset "UTF-8";
 
 @font-face {
-    font-family: "Naver booking Icons";
-    //src: url('/../img/fonts/Naver-booking-Icons.woff?456918077') format('woff');
-    font-weight: 400;
-    font-style: normal
+  font-family: "Naver booking Icons";
+  src: url("../font/Naver-booking-Icons.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
 }
 .fn-booking {
     display: inline-block;
@@ -127,10 +127,10 @@
     line-height: 1em
 }
 @font-face {
-    font-family: "Naver Icons";
-    //src: url('/../img/fonts/Naver-Icons.woff?456918077') format('woff');
-    font-weight: 400;
-    font-style: normal
+  font-family: "Naver Icons";
+  src: url("../font/Naver-Icons.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
 }
 .fn {
     display: inline-block;
@@ -826,16 +826,17 @@
     content: "\EADD"
 }
 @font-face {
-    font-family: NanumGothicWebR;
-    font-style: normal;
-    font-weight: 400;
-    src: url('/../img/fonts/NanumGothicRegular.woff?1703172120') format('woff')
+  font-family: NanumGothicWebR;
+  font-style: normal;
+  font-weight: 400;
+  src: url("../font/NanumGothicRegular.woff") format("woff");
 }
+
 @font-face {
-    font-family: NanumGothicWebB;
-    font-style: normal;
-    font-weight: 400;
-    src: url('/../img/fonts/NanumGothicBold.woff?1703172120') format('woff')
+  font-family: NanumGothicWebB;
+  font-style: normal;
+  font-weight: 400;
+  src: url("../font/NanumGothicBold.woff") format("woff");
 }
 @charset "utf-8";
 body,
@@ -13607,6 +13608,21 @@ select {
     padding-top: 3.5px;
     margin-bottom: 15px
 }
+
+/* my css */
+.login_form .warning_msg{
+  position: relative;
+  top: 5px;
+  left: 0;
+  background: #ffffff;
+  visibility: hidden;
+  height: 26px;
+  line-height: 26px;
+  width: 98%;
+  color: red;
+  padding-left: 10px;
+}
+
 .booking_login .login_form .label_form {
     display: block;
     padding: 3.5px 3px 3px;

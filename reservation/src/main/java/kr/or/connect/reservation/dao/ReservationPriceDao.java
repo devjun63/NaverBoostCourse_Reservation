@@ -1,5 +1,8 @@
 package kr.or.connect.reservation.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -31,9 +34,10 @@ public class ReservationPriceDao {
 	}
 
 	public Integer insertReservationPrice(ReservationPrice reservationPrice) {
-		final String sql = "insert into reservation_info_price(id, reservation_info_id, product_price_id, count) values(:reservationInfoPriceId, :reservationInfoId, :productPriceId, :count)";
-		SqlParameterSource params = new BeanPropertySqlParameterSource(reservationPrice);
-		
-		return jdbc.update(sql, params);
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("reservation_info_id", reservationPrice.getReservationInfoId());
+		parameters.put("product_price_id", reservationPrice.getProductPriceId());
+		parameters.put("count", reservationPrice.getCount());
+		return insertAction.executeAndReturnKey(parameters).intValue();
 	}
 }

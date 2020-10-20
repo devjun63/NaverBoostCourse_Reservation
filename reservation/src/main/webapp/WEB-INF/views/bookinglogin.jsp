@@ -49,8 +49,10 @@
                         <h2 class="login_header_sub border_bottom"> <span translate="CM-NON_MEMBER_BK_CONFIRMATION">비회원 예약확인</span> </h2>
                         <div class="login_form"> 
                            <label class="label_form" for="resrv_id" translate="CM-BOOKING_NUMBER">예약자 이메일 입력</label> 
-                           <input type="text" class="login_input ng-pristine ng-untouched ng-valid ng-empty" id="resrv_id" name="resrv_email" aria-invalid="false" placeholder="crong@naver.com" title="예매자이메일">  </div>
-                        <button type="submit" form="form1" class="login_btn confirm" > <span translate="CM-MY_BOOKING_CHECK">내 예약 확인</span> </button> <!----> <!----> <!----> <!----> 
+                           <input type="text" class="login_input ng-pristine ng-untouched ng-valid ng-empty" id="resrv_id" name="resrv_email" aria-invalid="false" placeholder="crong@naver.com" title="예매자이메일">  
+                           <div class="warning_msg">형식에 틀렸거나 너무 짧아요</div>
+                           </div>
+                        <button type="button" form="form1" class="login_btn confirm" > <span translate="CM-MY_BOOKING_CHECK">내 예약 확인</span> </button> <!----> <!----> <!----> <!----> 
                      </form>
                   </div>
                   <!----> <!----> 
@@ -110,4 +112,50 @@
 
        
    </body>
+   <script type="text/javascript">
+       var login_btn = document.querySelector(".login_btn");
+       var login_input = document.querySelector(".login_input");
+       var url = "/reservation/myreservation";
+       login_input.addEventListener('change', function(evt){
+			
+    	   const email_regExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+		   const email_value = evt.target.value;
+		   const warning_msg = evt.target.parentNode.children[2];
+				
+				if(!email_regExp.test(email_value)){
+					evt.target.focus();
+					warning_msg.style.visibility="visible";
+					setTimeout(function() {
+						warning_msg.style.visibility="hidden";
+					}, 1000);
+				}
+       });
+       login_btn.addEventListener("click", function(evt){
+    	   const email_regExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+    	   const email_value = login_input.value;
+		   const warning_msg = login_input.parentNode.children[2];
+			console.log(email_value);
+			if(!email_regExp.test(email_value)){
+				evt.target.focus();
+				warning_msg.style.visibility="visible";
+				setTimeout(function() {
+					warning_msg.style.visibility="hidden";
+				}, 1000);
+			}else{
+				function sendAjax(url){
+					var xhr = new XMLHttpRequest();
+					xhr.open("POST", url);	// method: POST
+					xhr.setRequestHeader("Content-Type", "text/javascript"); // Content-Type: json
+					xhr.responseType = "text";		// text for json
+					xhr.addEventListener("load", function () { // when success
+						/* console.log("성공 : "+this); */
+						
+					});
+					xhr.send(email_value);
+				}
+				sendAjax(url);
+			}
+       });
+       
+       </script>
 </html>
