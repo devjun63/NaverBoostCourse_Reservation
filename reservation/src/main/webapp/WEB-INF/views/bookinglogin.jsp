@@ -115,7 +115,7 @@
    <script type="text/javascript">
        var login_btn = document.querySelector(".login_btn");
        var login_input = document.querySelector(".login_input");
-       var url = "/reservation/myreservation";
+       
        login_input.addEventListener('change', function(evt){
 			
     	   const email_regExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
@@ -142,17 +142,32 @@
 					warning_msg.style.visibility="hidden";
 				}, 1000);
 			}else{
+				var url = "/reservation/checkReservation";
 				function sendAjax(url){
 					var xhr = new XMLHttpRequest();
-					xhr.open("POST", url);	// method: POST
+					xhr.open("POST", "/reservation/checkReservation");	// method: POST
 					xhr.setRequestHeader("Content-Type", "text/javascript"); // Content-Type: json
 					xhr.responseType = "text";		// text for json
 					xhr.addEventListener("load", function () { // when success
 						/* console.log("성공 : "+this); */
-						
+						if(this.response === "1"){
+							location.href = "/reservation/myreservation?reservationEmail="+email_value;
+						}else{
+							evt.target.focus();
+							warning_msg.style.visibility="visible";
+							warning_msg.innerHTML = "존재하지 않는 이메일입니다.";
+							setTimeout(function() {
+								warning_msg.style.visibility="hidden";
+								warning_msg.innerHTML = "형식에 틀렸거나 너무 짧아요";
+							}, 2000);
+						}
 					});
+					
+					console.log(email_value);
 					xhr.send(email_value);
+					
 				}
+				
 				sendAjax(url);
 			}
        });

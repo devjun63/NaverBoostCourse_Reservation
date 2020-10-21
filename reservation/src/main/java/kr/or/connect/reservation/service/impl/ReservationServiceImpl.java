@@ -40,14 +40,15 @@ public class ReservationServiceImpl implements ReservationService{
 		reservationEmail 기반으로 reservation 정보를 받아온다.
 		reservationinfo에는 예약 정보들과 displayinfo
 		param 값으로 reservationinfo 받아온다.
-
+		
+		현재 size도 맞지 않고 reservationInfoResponse
 		 */
 		ReservationInfoResponse reservationInfoResponse = new ReservationInfoResponse();
 		List<ReservationInfo> reservations = reservationDao.getReservations(reservationEmail);
 		reservations = reservationDao.setReservationsAsDisplayInfo(reservations);
 
 		int size = 0;
-		size = reservations.size();
+		size = reservations.get(0).getDisplayInfo().size();
 
 		reservationInfoResponse.setReservations(reservations);
 		reservationInfoResponse.setSize(size);
@@ -55,6 +56,8 @@ public class ReservationServiceImpl implements ReservationService{
 		return reservationInfoResponse;
 	}
 
+	
+	
 	@Override
 	public String getReserveStartDate() {
 		Calendar cal = Calendar.getInstance();
@@ -91,6 +94,13 @@ public class ReservationServiceImpl implements ReservationService{
 	public List<ProductPrice> getProductPrices(Integer displayInfoId) {
 		List<ProductPrice> productPrice = reservationDao.getProductPrices(displayInfoId);
 		return productPrice;
+	}
+	
+	@Override
+	public String getReserveDate(Date date) {
+		SimpleDateFormat formatTime = new SimpleDateFormat("yyyy.MM.dd.(EEE)", Locale.KOREAN);
+		String formatDate = formatTime.format(date);
+		return formatDate;
 	}
 
 	@Override
@@ -146,6 +156,13 @@ public class ReservationServiceImpl implements ReservationService{
 		return reservationResponse;
 		
 	}
+
+
+	
+
+
+
+	
 
 
 

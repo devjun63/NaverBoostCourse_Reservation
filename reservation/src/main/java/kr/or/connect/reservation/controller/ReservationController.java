@@ -1,8 +1,12 @@
 package kr.or.connect.reservation.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,10 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.connect.reservation.dto.DisplayInfoResponse;
 import kr.or.connect.reservation.dto.ProductPrice;
+import kr.or.connect.reservation.dto.ReservationInfo;
 import kr.or.connect.reservation.dto.ReservationInfoResponse;
 import kr.or.connect.reservation.dto.ReservationParam;
 import kr.or.connect.reservation.dto.ReservationResponse;
@@ -30,20 +35,52 @@ public class ReservationController {
 	@Autowired
 	DetailService detailService;
 
-	@PostMapping(path = "/myreservation")
-	public String myreservation(@RequestBody String reservationEmail) {
 
+	@PostMapping(path = "/checkReservation")
+	@ResponseBody
+	public String checkReservation(@RequestBody String reservationEmail) {
 		ReservationInfoResponse reservationInfoResponse = reservationService.getReservationInfo(reservationEmail);
 		Map<String, Object> map = new HashMap<>();
 		if(reservationInfoResponse == null) {
 			map.put("size", 0);
-			return "";
+			return "0";
 		}else {
 			System.out.println(reservationInfoResponse.getReservations().get(0).getReservationName());
-			map.put("reservations", reservationInfoResponse.getReservations());
 			map.put("size", reservationInfoResponse.getSize());
+			map.put("reservations",reservationInfoResponse.getReservations());
 		}
-		//model.addAllAttributes(map);
+		return "1";
+	}
+	
+	@GetMapping("/myreservation")
+	public String myreservePage(@RequestParam String reservationEmail, ModelMap model, HttpSession session) {
+		
+		ReservationInfoResponse reservationInfoResponse = reservationService.getReservationInfo(reservationEmail);
+		List<ReservationInfo> reservations = new ArrayList<>();
+		List<ReservationInfo> cancleReservations = new ArrayList<>();
+		List<ReservationInfo> completeReservations = new ArrayList<>();
+		Map<String, Object> map = new HashMap<>();
+		Date currentDate = new Date();
+		for(int i = 0; i < reservationInfoResponse.getReservations().size(); i++) {
+			Date getDate = reservationInfoResponse.getReservations().get(i).getReservationDate();
+			int result = currentDate.compareTo(getDate);
+			if(reservationInfoResponse.getReservations().get(i).isCancelYn() == true) {
+				cancleReservations.add(reservationInfoResponse.getReservations().get(i));
+			}else {
+				if(result < 0) {
+					reservations.add(reservationInfoResponse.getReservations().get(i));
+				}else {
+					completeReservations.add(reservationInfoResponse.getReservations().get(i));
+				}
+			}
+		}
+		map.put("size", reservationInfoResponse.getSize());
+		map.put("reservations", reservations);
+		map.put("completeReservations", completeReservations);
+		map.put("cancleReservations", cancleReservations);
+		map.put("reservationEmail", reservationEmail);
+		model.addAllAttributes(map);
+		session.setAttribute("reserveEmail", reservationEmail);
 		return "myreservation";
 	}
 

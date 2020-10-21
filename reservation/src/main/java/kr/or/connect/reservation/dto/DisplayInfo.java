@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class DisplayInfo { 
 	private int categoryId; 				// 카테고리 Id
-	private String cateogryName;			// 카테고리 이름
+	private String categoryName;			// 카테고리 이름
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "Asia/Seoul")
 	private Date createDate;				// 생성일
 	private int displayInfoId;				// 전시 (display_info) Id
@@ -26,13 +26,13 @@ public class DisplayInfo {
 	
 	public DisplayInfo() {}
 	
-	public DisplayInfo(int categoryId, String cateogryName, Date createDate, int displayInfoId, String email,
+	public DisplayInfo(int categoryId, String categoryName, Date createDate, int displayInfoId, String email,
 			String homepage, Date modifyDate, String openingHours, String placeLot, String placeName,
 			String placeStreet, String productContent, String productDescription, String productEvent, int productId,
 			String telephone) {
 		super();
 		this.categoryId = categoryId;
-		this.cateogryName = cateogryName;
+		this.categoryName = categoryName;
 		this.createDate = createDate;
 		this.displayInfoId = displayInfoId;
 		this.email = email;
@@ -57,12 +57,12 @@ public class DisplayInfo {
 		this.categoryId = categoryId;
 	}
 
-	public String getCateogryName() {
-		return cateogryName;
+	public String getCategoryName() {
+		return categoryName;
 	}
 
-	public void setCateogryName(String cateogryName) {
-		this.cateogryName = cateogryName;
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	public Date getCreateDate() {
@@ -179,7 +179,7 @@ public class DisplayInfo {
 
 	@Override
 	public String toString() {
-		return "DisplayInfo [categoryId=" + categoryId + ", cateogryName=" + cateogryName + ", createDate=" + createDate
+		return "DisplayInfo [categoryId=" + categoryId + ", categoryName=" + categoryName + ", createDate=" + createDate
 				+ ", displayInfoId=" + displayInfoId + ", email=" + email + ", homepage=" + homepage + ", modifyDate="
 				+ modifyDate + ", openingHours=" + openingHours + ", placeLot=" + placeLot + ", placeName=" + placeName
 				+ ", placeStreet=" + placeStreet + ", productContent=" + productContent + ", productDescription="

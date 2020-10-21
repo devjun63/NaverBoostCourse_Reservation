@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -24,9 +26,22 @@
 					class="spr_bi ico_bk_logo">예약</span>
 				</a>
 			</h1>
-			<a href="./bookinglogin" class="btn_my"> <span
-				class="viewReservation" title="예약확인">예약확인</span>
-			</a> </header>
+			<c:choose>
+				<c:when test="${sessionScope.reserveEmail != null}">
+					<a href="/reservation/myreservation?reservationEmail=${sessionScope.reserveEmail }" class="btn_my"> 
+					<span class="viewReservation" title="예약확인">
+					${sessionScope.reserveEmail }
+					</span>
+					</a>
+				</c:when>
+				<c:otherwise>
+					<a href="./bookinglogin" class="btn_my"> <span class="viewReservation" title="예약확인">
+						예약확인
+					</span>
+					</a>
+				</c:otherwise>
+			</c:choose>
+			</header>
 		</div>
 		<hr />
 		<div class="event">
