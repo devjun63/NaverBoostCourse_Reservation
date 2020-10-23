@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,7 +96,14 @@ public class MainPageController {
 		return map;
 	}
 	
-	
+	@GetMapping(path = "/logout")
+	public String logout(HttpSession session) {
+		session.setMaxInactiveInterval(0);
+		session.invalidate();
+		System.out.println("logout");
+		return "redirect:./";
+		
+	}
 	
 	@GetMapping(path = "/bookinglogin")
 	public String bookinglogin(){

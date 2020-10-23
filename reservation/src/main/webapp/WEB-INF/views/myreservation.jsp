@@ -33,6 +33,7 @@
           </h1>
           <a href="#" class="btn_my">
             <span title="내예약" class="viewReservation">${reservationEmail }</span>
+            <span title="로그아웃" class="logout"> / 로그아웃</span>
           </a>
         </header>
       </div>
@@ -564,6 +565,27 @@
     <!--// 취소 팝업 -->
   </body>
   <script type="text/javascript">
-  	
+  var logoutBtn = document.querySelector(".logout");
+  logoutBtn.addEventListener('click', function(evt){
+	  const checkLogout = confirm("로그아웃 하시겠습니까?");
+	  if(checkLogout === true){
+		  location.href = "/reservation/logout";
+	  }
+  });
+  
+  
+  var url = "";
+  var xhr = new XMLHttpRequest();
+  xhr.open("PUT", url+'/12', true);
+  xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+  xhr.onload = function () {
+  	var users = JSON.parse(xhr.responseText);
+  	if (xhr.readyState == 4 && xhr.status == "200") {
+  		console.table(users);
+  	} else {
+  		console.error(users);
+  	}
+  }
+  xhr.send(json);
   </script>
 </html>

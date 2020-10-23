@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,7 +37,12 @@ public class ReservationController {
 	@Autowired
 	DetailService detailService;
 
+	@PutMapping(value = "/cancleReservation")
+	public void cancleReservation(@PathVariable(name = "reservationId") Integer reservationInfoId) { 
+		// do something }
+	}
 
+	
 	@PostMapping(path = "/checkReservation")
 	@ResponseBody
 	public String checkReservation(@RequestBody String reservationEmail) {
