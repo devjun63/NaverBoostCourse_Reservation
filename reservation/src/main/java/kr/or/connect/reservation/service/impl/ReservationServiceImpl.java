@@ -42,14 +42,16 @@ public class ReservationServiceImpl implements ReservationService{
 		param 값으로 reservationinfo 받아온다.
 		
 		현재 size도 맞지 않고 reservationInfoResponse
+		
+		
 		 */
 		ReservationInfoResponse reservationInfoResponse = new ReservationInfoResponse();
 		List<ReservationInfo> reservations = reservationDao.getReservations(reservationEmail);
 		reservations = reservationDao.setReservationsAsDisplayInfo(reservations);
 
 		int size = 0;
-		size = reservations.get(0).getDisplayInfo().size();
-
+		size = reservations.size();
+		System.out.println(size);
 		reservationInfoResponse.setReservations(reservations);
 		reservationInfoResponse.setSize(size);
 
@@ -105,7 +107,7 @@ public class ReservationServiceImpl implements ReservationService{
 
 	@Override
 	public int deleteReservationInfo() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
@@ -158,12 +160,21 @@ public class ReservationServiceImpl implements ReservationService{
 	}
 
 
-	
 
-
-
-	
-
+	@Override
+	@Transactional
+	public ReservationResponse cancelReservation(Integer reservationInfoId) {
+		ReservationResponse reservationResponse = new ReservationResponse();
+		int updateResult = reservationDao.updateReservation(reservationInfoId);
+		System.out.println("업데이트 결과 : "+updateResult);
+		if(updateResult == 1) {
+			reservationResponse = reservationDao.getReservationResponse(reservationInfoId);
+			reservationResponse.setPrices(reservationPriceDao.getReservationPrice(reservationInfoId));
+		}else {
+			return null;
+		}
+		return reservationResponse;
+	}
 
 
 	/*@Override

@@ -1,17 +1,18 @@
 package kr.or.connect.reservation.dao;
 
+import static kr.or.connect.reservation.dao.ReservationPriceDaoSqls.SELECT_RESERVATION_PRICE_BY_RESERVATION_INFO_ID;
+
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsertOperations;
 import org.springframework.stereotype.Repository;
 
 import kr.or.connect.reservation.dto.ReservationPrice;
@@ -39,5 +40,10 @@ public class ReservationPriceDao {
 		parameters.put("product_price_id", reservationPrice.getProductPriceId());
 		parameters.put("count", reservationPrice.getCount());
 		return insertAction.executeAndReturnKey(parameters).intValue();
+	}
+	
+	public List<ReservationPrice> getReservationPrice(int reservationInfoId){
+		Map<String,Integer> params = Collections.singletonMap("reservationInfoId", reservationInfoId);
+		return jdbc.query(SELECT_RESERVATION_PRICE_BY_RESERVATION_INFO_ID, params, reservationPricerowMapper);
 	}
 }

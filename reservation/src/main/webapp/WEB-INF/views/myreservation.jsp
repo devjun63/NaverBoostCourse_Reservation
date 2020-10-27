@@ -85,8 +85,8 @@
                   <i class="spr_book2 ico_back"></i>
                   <em class="tit">취소·환불</em> <span class="figure">
                   <c:choose>
-                  	<c:when test="${!empty cancleReservations}">
-                  		${fn:length(cancleReservations) }
+                  	<c:when test="${!empty cancelReservations}">
+                  		${fn:length(cancelReservations) }
                   	</c:when>
                   	<c:otherwise>
                   	0
@@ -181,7 +181,7 @@
                             </em>
                           </div>
                           <!-- [D] 예약 신청중, 예약 확정 만 취소가능, 취소 버튼 클릭 시 취소 팝업 활성화 -->
-                          <div class="booking_cancel">
+                          <div class="booking_cancel" data-reserveid="${reservations.reservationInfoId}">
                             <button class="btn"><span>취소</span></button>
                           </div>
                         </div>
@@ -298,8 +298,8 @@
               </li>
             	</c:forEach>
             </c:if>
-            <c:if test="${cancleReservations ne null}">
-            	<c:forEach var="cancleReservations" items="${cancleReservations}" varStatus="status">
+            <c:if test="${cancelReservations ne null}">
+            	<c:forEach var="cancelReservations" items="${cancelReservations}" varStatus="status">
             		<li class="card used cancel">
                 <div class="link_booking_details">
                   <div class="card_header">
@@ -318,21 +318,21 @@
                       <div class="left"></div>
                       <div class="middle">
                         <div class="card_detail">
-                          <em class="booking_number">No.${cancleReservations.reservationInfoId}</em>
+                          <em class="booking_number">No.${cancelReservations.reservationInfoId}</em>
                           <h4 class="tit">서비스명/상품명</h4>
                           <ul class="detail">
                             <li class="item">
                               <span class="item_tit">일정</span>
                               <em class="item_dsc">
-                                <fmt:formatDate value="${cancleReservations.createDate }" pattern="yyyy.MM.dd.(EEE)"/>
+                                <fmt:formatDate value="${cancelReservations.createDate }" pattern="yyyy.MM.dd.(EEE)"/>
                                 ~
-                                <fmt:formatDate value="${cancleReservations.reservationDate }" pattern="yyyy.MM.dd.(EEE)"/>
+                                <fmt:formatDate value="${cancelReservations.reservationDate }" pattern="yyyy.MM.dd.(EEE)"/>
                               </em>
                             </li>
                             <li class="item">
                               <span class="item_tit">내역</span>
                               <em class="item_dsc"> 
-                              <c:forEach var="displayInfo" items="${cancleReservations.displayInfo}" begin="0" end="0">
+                              <c:forEach var="displayInfo" items="${cancelReservations.displayInfo}" begin="0" end="0">
                               		${displayInfo.productContent}
                               </c:forEach>
                               </em>
@@ -340,7 +340,7 @@
                             <li class="item">
                               <span class="item_tit">장소</span>
                               <em class="item_dsc">
-                              <c:forEach var="displayInfo" items="${cancleReservations.displayInfo}" begin="0" end="0">
+                              <c:forEach var="displayInfo" items="${cancelReservations.displayInfo}" begin="0" end="0">
                               		${displayInfo.placeName}
                               </c:forEach>
                               </em>
@@ -348,7 +348,7 @@
                             <li class="item">
                               <span class="item_tit">업체</span>
                               <em class="item_dsc">
-                              	<c:forEach var="displayInfo" items="${cancleReservations.displayInfo}" begin="0" end="0">
+                              	<c:forEach var="displayInfo" items="${cancelReservations.displayInfo}" begin="0" end="0">
                               		<c:choose>
                               			<c:when test="${!empty displayInfo.homepage}">
                               				${displayInfo.homepage}
@@ -365,7 +365,7 @@
                             <span class="price_tit">결제 예정금액</span>
                             <em class="price_amount">
                               <span>
-                              <fmt:formatNumber type="number" maxFractionDigits="3" value="${cancleReservations.totalPrice}" />
+                              <fmt:formatNumber type="number" maxFractionDigits="3" value="${cancelReservations.totalPrice}" />
                               </span>
                               <span class="unit">원</span>
                             </em>
@@ -563,6 +563,89 @@
       </div>
     </div>
     <!--// 취소 팝업 -->
+    <script type="rv-template" id="canceltItem">
+                <div class="link_booking_details">
+                  <div class="card_header">
+                    <div class="left"></div>
+                    <div class="middle">
+                      <!--[D] 예약 신청중: .ico_clock, 예약확정&이용완료: .ico_check2, 취소된 예약: .ico_cancel 추가 spr_book -->
+                      <i class="spr_book2 ico_cancel"></i>
+                      <span class="tit">취소된 예약</span>
+                    </div>
+                    <div class="right"></div>
+                  </div>
+                </div>
+                <article class="card_item">
+                  <a href="#" class="link_booking_details">
+                    <div class="card_body">
+                      <div class="left"></div>
+                      <div class="middle">
+                        <div class="card_detail">
+                          <em class="booking_number">No.{reservationInfoId}</em>
+                          <h4 class="tit">서비스명/상품명</h4>
+                          <ul class="detail">
+                            <li class="item">
+                              <span class="item_tit">일정</span>
+                              <em class="item_dsc">
+                                {createDate }
+                                ~
+                                {reservationDate }
+                              </em>
+                            </li>
+                            <li class="item">
+                              <span class="item_tit">내역</span>
+                              <em class="item_dsc"> 
+                              <c:forEach var="displayInfo" items="{displayInfo}" begin="0" end="0">
+                              		{productContent}
+                              </c:forEach>
+                              </em>
+                            </li>
+                            <li class="item">
+                              <span class="item_tit">장소</span>
+                              <em class="item_dsc">
+                              <c:forEach var="displayInfo" items="{displayInfo}" begin="0" end="0">
+                              		{placeName}
+                              </c:forEach>
+                              </em>
+                            </li>
+                            <li class="item">
+                              <span class="item_tit">업체</span>
+                              <em class="item_dsc">
+                              	<c:forEach var="displayInfo" items="{displayInfo}" begin="0" end="0">
+                              		<c:choose>
+                              			<c:when test="{homepage}">
+                              				{homepage}
+                              			</c:when>
+                              			<c:otherwise>
+                              				업체명이 없습니다.
+                              			</c:otherwise>
+                              		</c:choose>
+                              </c:forEach>
+                              </em>
+                            </li>
+                          </ul>
+                          <div class="price_summary">
+                            <span class="price_tit">결제 예정금액</span>
+                            <em class="price_amount">
+                              <span>
+                              {totalPrice}
+                              </span>
+                              <span class="unit">원</span>
+                            </em>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="right"></div>
+                    </div>
+                    <div class="card_footer">
+                      <div class="left"></div>
+                      <div class="middle"></div>
+                      <div class="right"></div>
+                    </div>
+                  </a>
+                </article>
+              
+	</script>
   </body>
   <script type="text/javascript">
   var logoutBtn = document.querySelector(".logout");
@@ -573,19 +656,67 @@
 	  }
   });
   
-  
-  var url = "";
-  var xhr = new XMLHttpRequest();
-  xhr.open("PUT", url+'/12', true);
-  xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
-  xhr.onload = function () {
-  	var users = JSON.parse(xhr.responseText);
-  	if (xhr.readyState == 4 && xhr.status == "200") {
-  		console.table(users);
-  	} else {
-  		console.error(users);
-  	}
+  var cancelBtns = document.querySelectorAll(".booking_cancel");
+  let i = 0;
+  for(i; i < cancelBtns.length; i++){
+	  cancelBtns[i].addEventListener('click', function(evt){
+		  const checkCancle = confirm("정말로 취소하시겠습니까?");
+		  var data = {}
+		  let reserveId;
+		  if(checkCancle === true){
+			  if( evt.target.tagName === "DIV" ) {
+				  reserveId = evt.target.dataset.reserveid;
+				  data.reservationInfoId = evt.target.dataset.reserveid;
+				} else if ( evt.target.tagName === "BUTTON" ) {
+					reserveId = evt.target.parentElement.dataset.reserveid;
+					data.reservationInfoId = evt.target.parentElement.dataset.reserveid;
+				} else if (evt.target.tagName === "SPAN") {
+					reserveId = evt.target.parentElement.parentElement.dataset.reserveid;
+					data.reservationInfoId = evt.target.parentElement.dataset.reserveid;
+				}
+			  
+			  evt.target.closest(".confirmed").remove();
+			  
+			  var json = JSON.stringify(data);
+			  var url = "/reservation/cancleReservation/";
+			  var xhr = new XMLHttpRequest();
+			  xhr.open("PUT", url+reserveId, true);
+			  xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+			  xhr.send(json);
+			  xhr.onreadystatechange = function (e) {
+				  if (xhr.readyState !== XMLHttpRequest.DONE) return;
+				  if(xhr.status === 200) {
+					  var resJson = JSON.parse(xhr.responseText);
+				      console.log(resJson);
+				    
+				      drawCancelHtml(resJson);
+				  } else {
+				    console.log("Error!");
+				  }
+				};
+			  
+		  }
+	  });
   }
-  xhr.send(json);
+  function drawCancelHtml(resJson) {
+		var producthtml = document.getElementById("canceltItem").innerHTML;
+		console.log("프로덕트리스트 길이 : "+resJson.product_list.length);
+		var result = "<li class='card used cancel'>";
+			for(var i=0; i<resJson.product_list.length; i+=2) {
+				
+					result += producthtml.replace("{reservationInfoId}", resJson.product_list[i].displayInfoId)
+					.replace("{createDate}", resJson.product_list[i].productContent)
+					.replace("{reservationDate}", resJson.product_list[i].productContent)
+					.replace("{productContent}", resJson.product_list[i].productDescription)
+					.replace("{placeName}", resJson.product_list[i].placeName)
+					.replace("{homepage}", resJson.product_list[i].productImageUrl)
+					.replace("{totalPrice}", resJson.product_list[i].productImageUrl);
+			}
+			result += "</li>";
+			document.querySelector("footer").insertAdjacentHTML("beforebegin",result);
+		}
+  
+	
   </script>
+  
 </html>

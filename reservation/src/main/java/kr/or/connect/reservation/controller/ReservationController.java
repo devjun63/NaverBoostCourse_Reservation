@@ -36,10 +36,16 @@ public class ReservationController {
 
 	@Autowired
 	DetailService detailService;
-
-	@PutMapping(value = "/cancleReservation")
-	public void cancleReservation(@PathVariable(name = "reservationId") Integer reservationInfoId) { 
-		// do something }
+	
+	@PutMapping(value = "/cancleReservation/{reservationInfoId}")
+	@ResponseBody
+	public ReservationResponse cancleReservation(@PathVariable(name = "reservationInfoId") Integer reservationInfoId) {
+		System.out.println("예약 : "+reservationInfoId);
+		ReservationResponse reservationResponse = reservationService.cancelReservation(reservationInfoId);
+		System.out.println("취소 여부 : " + reservationResponse.isCancelYn());
+		System.out.println("예약 아이디 : " + reservationResponse.getReservationInfoId());
+		System.out.println("예약 이메일 : " + reservationResponse.getReservationEmail());
+		return reservationResponse; 	
 	}
 
 	
@@ -63,8 +69,9 @@ public class ReservationController {
 	public String myreservePage(@RequestParam String reservationEmail, ModelMap model, HttpSession session) {
 		
 		ReservationInfoResponse reservationInfoResponse = reservationService.getReservationInfo(reservationEmail);
+		System.out.println("내 예약 이메일"+reservationEmail);
 		List<ReservationInfo> reservations = new ArrayList<>();
-		List<ReservationInfo> cancleReservations = new ArrayList<>();
+		List<ReservationInfo> cancelReservations = new ArrayList<>();
 		List<ReservationInfo> completeReservations = new ArrayList<>();
 		Map<String, Object> map = new HashMap<>();
 		Date currentDate = new Date();
@@ -72,7 +79,7 @@ public class ReservationController {
 			Date getDate = reservationInfoResponse.getReservations().get(i).getReservationDate();
 			int result = currentDate.compareTo(getDate);
 			if(reservationInfoResponse.getReservations().get(i).isCancelYn() == true) {
-				cancleReservations.add(reservationInfoResponse.getReservations().get(i));
+				cancelReservations.add(reservationInfoResponse.getReservations().get(i));
 			}else {
 				if(result < 0) {
 					reservations.add(reservationInfoResponse.getReservations().get(i));
@@ -84,7 +91,7 @@ public class ReservationController {
 		map.put("size", reservationInfoResponse.getSize());
 		map.put("reservations", reservations);
 		map.put("completeReservations", completeReservations);
-		map.put("cancleReservations", cancleReservations);
+		map.put("cancelReservations", cancelReservations);
 		map.put("reservationEmail", reservationEmail);
 		model.addAllAttributes(map);
 		session.setAttribute("reserveEmail", reservationEmail);

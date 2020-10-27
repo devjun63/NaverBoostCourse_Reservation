@@ -3,6 +3,8 @@ package kr.or.connect.reservation.dao;
 import static kr.or.connect.reservation.dao.DetailDaoSqls.SELECT_DISPLAY_INFO_BY_DISPLAY_INFO_ID;
 import static kr.or.connect.reservation.dao.ReservationDaoSqls.SELECT_PRODUCT_PRICES;
 import static kr.or.connect.reservation.dao.ReservationDaoSqls.SELECT_RESERVATION_INFO;
+import static kr.or.connect.reservation.dao.ReservationDaoSqls.UPDATE_RESERVATION_INFO;
+import static kr.or.connect.reservation.dao.ReservationDaoSqls.SELECT_BY_RESERVATION_INFO_ID;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,12 +26,13 @@ import org.springframework.stereotype.Repository;
 import kr.or.connect.reservation.dto.DisplayInfo;
 import kr.or.connect.reservation.dto.ProductPrice;
 import kr.or.connect.reservation.dto.ReservationInfo;
-import kr.or.connect.reservation.dto.ReservationPrice;
 import kr.or.connect.reservation.dto.ReservationResponse;
 
 @Repository
 public class ReservationDao {
 
+	final static Integer CANCLE_FLAG = 1;
+	
 	private NamedParameterJdbcTemplate jdbc;
 	private SimpleJdbcInsert insertAction;
 
@@ -37,6 +40,7 @@ public class ReservationDao {
 	private RowMapper<DisplayInfo> displayInfo_rowMapper = BeanPropertyRowMapper.newInstance(DisplayInfo.class);
 	private RowMapper<ProductPrice> productPrice_rowMapper = BeanPropertyRowMapper.newInstance(ProductPrice.class);
 	private RowMapper<ReservationResponse> reservationResponse_rowMapper = BeanPropertyRowMapper.newInstance(ReservationResponse.class);
+	
 	
 	
 	public void setDataSource(DataSource dataSource) {
@@ -107,4 +111,22 @@ public class ReservationDao {
 		
 		
 	}
+
+	public int updateReservation(Integer reservationInfoId) {
+		Map<String, Integer> params = new HashMap<>();
+		params.put("reservationInfoId", reservationInfoId);
+		params.put("cancel_flag", CANCLE_FLAG);
+		return jdbc.update(UPDATE_RESERVATION_INFO, params);
+	}
+	
+	public ReservationResponse getReservationResponse(Integer reservationInfoId) {
+		try {
+			Map<String,Integer> params = Collections.singletonMap("reservationInfoId", reservationInfoId);
+			return jdbc.queryForObject(SELECT_BY_RESERVATION_INFO_ID, params, reservationResponse_rowMapper);
+		}catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 }

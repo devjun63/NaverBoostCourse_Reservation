@@ -20,6 +20,7 @@ public interface ReservationService {
 	public List<ProductPrice> getProductPrices(Integer displayInfoId);
 	
 	public ReservationResponse setReservation(ReservationParam param);
+	public ReservationResponse cancelReservation(Integer reservationInfoId);
 	
 	
 	public int deleteReservationInfo();
