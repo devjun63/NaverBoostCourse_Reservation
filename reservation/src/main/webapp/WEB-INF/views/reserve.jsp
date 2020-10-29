@@ -182,8 +182,10 @@
 									</label>
 									<div class="inline_control tel_wrap">
 										<input type="tel" name="reservationTelephone" id="tel"
-											class="tel" value="" placeholder="휴대폰 입력 시 예매내역 문자발송"
-											maxlength="17" />
+											class="tel1" value="" placeholder="010"
+											maxlength="3" /> -
+										<input type="tel" name="reservationTelephone" class="tel2" value="" placeholder="1234" maxlength="4"> -
+										<input type="tel" name="reservationTelephone" class="tel3" value="" placeholder="5678" maxlength="4">
 										<div class="warning_msg">형식이 틀렸거나 너무 짧아요</div>
 									</div>
 								</div>
@@ -294,7 +296,9 @@
 	var bk_btn_wrap = document.querySelector(".bk_btn_wrap");
 	var chk_txt_label = document.querySelector(".chk_txt_label");
 	var name_txt = document.querySelector(".text");
-	var tel = document.querySelector(".tel");
+	var tel1 = document.querySelector(".tel1");
+	var tel2 = document.querySelector(".tel2");
+	var tel3 = document.querySelector(".tel3");
 	var email = document.querySelector(".email");
 	
 	
@@ -310,7 +314,7 @@
 		const check_tel = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
 		const check_email = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 		const name_val = name_txt.value;
-		const tel_val = tel.value;
+		const tel_val = tel1.value +'-'+ tel2.value +'-'+ tel3.value;
 		const email_val = email.value;
 		if(!bk_btn_wrap.classList.contains("disable")){
 			if((check_name.test(name_val))&&(check_tel.test(tel_val))&&(check_email.test(email_val))){
@@ -475,18 +479,40 @@
 		
 		
 		form_horizontal.addEventListener('change', function(evt){
-			if(evt.target.classList.contains('tel')){
+			if(evt.target.classList.contains('tel1')||evt.target.classList.contains('tel2')||evt.target.classList.contains('tel3')){
 				const tel_regExp = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+				const tel1_regExp = /^[0-9]{2,3}$/;
+				const tel2_regExp = /^[0-9]{3,4}$/;
+				const tel3_regExp = /^[0-9]{4}$/;
 				const tel_value = evt.target.value;
-				const warning_msg = evt.target.parentNode.children[1];
-				
-				if(!tel_regExp.test(tel_value)){
-					evt.target.focus();
-					warning_msg.style.visibility="visible";
-					setTimeout(function() {
-						warning_msg.style.visibility="hidden";
-					}, 1000);
-				}
+				const warning_msg = evt.target.parentNode.children[3];
+				if(evt.target.classList.contains('tel1')){
+					if(!tel1_regExp.test(tel_value)){
+						evt.target.focus();
+						warning_msg.style.visibility="visible";
+						setTimeout(function() {
+							warning_msg.style.visibility="hidden";
+						}, 1000);
+					}
+				};
+				if(evt.target.classList.contains('tel2')){
+					if(!tel2_regExp.test(tel_value)){
+						evt.target.focus();
+						warning_msg.style.visibility="visible";
+						setTimeout(function() {
+							warning_msg.style.visibility="hidden";
+						}, 1000);
+					}
+				};
+				if(evt.target.classList.contains('tel3')){
+					if(!tel3_regExp.test(tel_value)){
+						evt.target.focus();
+						warning_msg.style.visibility="visible";
+						setTimeout(function() {
+							warning_msg.style.visibility="hidden";
+						}, 1000);
+					}
+				};
 			}else if(evt.target.classList.contains('text')){
 				const name_regExp = /^[가-힣a-z0-9_]{2,12}$/;
 				const name_value = evt.target.value;
