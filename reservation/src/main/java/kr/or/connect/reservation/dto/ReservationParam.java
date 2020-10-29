@@ -2,14 +2,23 @@ package kr.or.connect.reservation.dto;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class ReservationParam {
 	// description: 예약하기 Request Body 모델
+	@ApiModelProperty(position = 1, notes = "전시상품 Id")
 	private int displayInfoId;					// 전시상품 Id
+	@ApiModelProperty(position = 2, notes = "예약 가격 정보")
 	private List<ReservationPrice> prices;		// 예약 가격 정보
+	@ApiModelProperty(position = 3, notes = "상품 Id")
 	private int productId;                      // 상품 Id
+	@ApiModelProperty(position = 4, notes = "예약자 이메일")
 	private String reservationEmail;            // 예약자 이메일
+	@ApiModelProperty(position = 5, notes = "예약자명")
 	private String reservationName;             // 예약자명
+	@ApiModelProperty(position = 6, notes = "예약자 전화번호")
 	private String reservationTelephone;        // 예약자 전화번호
+	@ApiModelProperty(position = 7, notes = "예약일")
 	private String reservationYearMonthDay;		// 예약일
 	
 	public ReservationParam() {}

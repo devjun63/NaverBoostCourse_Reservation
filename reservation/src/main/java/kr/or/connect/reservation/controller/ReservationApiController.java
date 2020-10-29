@@ -1,15 +1,22 @@
 package kr.or.connect.reservation.controller;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,7 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import kr.or.connect.reservation.dto.Category;
 import kr.or.connect.reservation.dto.CategoryResponse;
 import kr.or.connect.reservation.dto.DisplayInfoResponse;
@@ -25,9 +35,15 @@ import kr.or.connect.reservation.dto.Product;
 import kr.or.connect.reservation.dto.ProductResponse;
 import kr.or.connect.reservation.dto.Promotion;
 import kr.or.connect.reservation.dto.PromotionResponse;
+import kr.or.connect.reservation.dto.ReservationInfo;
+import kr.or.connect.reservation.dto.ReservationInfoResponse;
+import kr.or.connect.reservation.dto.ReservationParam;
+import kr.or.connect.reservation.dto.ReservationResponse;
 import kr.or.connect.reservation.service.DetailService;
 import kr.or.connect.reservation.service.MainPageService;
+import kr.or.connect.reservation.service.ReservationService;
 
+@Api(description="모든 명세", tags="all")
 @RestController
 @RequestMapping(path="/api")
 public class ReservationApiController {
@@ -37,6 +53,9 @@ public class ReservationApiController {
 	
 	@Autowired
 	DetailService detailService;
+	
+	@Autowired
+	ReservationService reservationService;
 	
 	@ApiOperation(response=Product.class, value="상품 목록 구하기")
 	@GetMapping(path = "/products", produces = "application/json;charset=UTF-8")
@@ -94,6 +113,34 @@ public class ReservationApiController {
 		map.put("productPrices", displayInfoResponse.getProductPrices());   
 		return map;
 	} 
+	
+	@ApiOperation(response=ReservationInfoResponse.class, value="예약 정보 조회")
+	@GetMapping("/myreservation")
+	public String myreservePage(
+			@ApiParam (value="reservationEmail", required=true)
+			@RequestParam String reservationEmail, ModelMap model) {
+		
+		ReservationInfoResponse reservationInfoResponse = reservationService.getReservationInfo(reservationEmail);
+		model.addAttribute("reservationInfoResponse", reservationInfoResponse);
+		return "myreservation";
+	}
+	
+	
+	@ApiOperation(value="예약 하기")
+	@PostMapping(path = "/reserve")
+	public ReservationResponse setReservations(
+		@ApiParam (value="예약하기 Request Body 모델", required=true) 
+		@RequestBody  ReservationParam param){
+		return reservationService.setReservation(param);
+	}
+	
+	@ApiOperation(response=ReservationResponse.class, value="예약 취소하기")
+	@PutMapping(value = "/cancleReservation/{reservationInfoId}")
+	@ResponseBody
+	public ReservationResponse cancleReservation(@PathVariable(name = "reservationInfoId") Integer reservationInfoId) {
+		ReservationResponse reservationResponse = reservationService.apicancelReservation(reservationInfoId);
+		return reservationResponse; 	
+	}
 	
 	
 }

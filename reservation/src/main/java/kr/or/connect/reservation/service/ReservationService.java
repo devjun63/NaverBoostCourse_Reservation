@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import kr.or.connect.reservation.dto.ProductPrice;
+import kr.or.connect.reservation.dto.ReservationInfo;
 import kr.or.connect.reservation.dto.ReservationInfoResponse;
 import kr.or.connect.reservation.dto.ReservationParam;
 import kr.or.connect.reservation.dto.ReservationResponse;
@@ -20,8 +21,8 @@ public interface ReservationService {
 	public List<ProductPrice> getProductPrices(Integer displayInfoId);
 	
 	public ReservationResponse setReservation(ReservationParam param);
-	public ReservationResponse cancelReservation(Integer reservationInfoId);
-	
+	public ReservationResponse apicancelReservation(Integer reservationInfoId);
+	public ReservationInfo cancelReservation(Integer reservationInfoId);
 	
 	public int deleteReservationInfo();
 	

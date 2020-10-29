@@ -39,13 +39,13 @@ public class ReservationController {
 	
 	@PutMapping(value = "/cancleReservation/{reservationInfoId}")
 	@ResponseBody
-	public ReservationResponse cancleReservation(@PathVariable(name = "reservationInfoId") Integer reservationInfoId) {
+	public ReservationInfo cancleReservation(@PathVariable(name = "reservationInfoId") Integer reservationInfoId) {
 		System.out.println("예약 : "+reservationInfoId);
-		ReservationResponse reservationResponse = reservationService.cancelReservation(reservationInfoId);
-		System.out.println("취소 여부 : " + reservationResponse.isCancelYn());
-		System.out.println("예약 아이디 : " + reservationResponse.getReservationInfoId());
-		System.out.println("예약 이메일 : " + reservationResponse.getReservationEmail());
-		return reservationResponse; 	
+		ReservationInfo reservationInfo = reservationService.cancelReservation(reservationInfoId);
+		System.out.println("취소 여부 : " + reservationInfo.isCancelYn());
+		System.out.println("예약 아이디 : " + reservationInfo.getReservationInfoId());
+		System.out.println("예약 이메일 : " + reservationInfo.getReservationEmail());
+		return reservationInfo; 	
 	}
 
 	

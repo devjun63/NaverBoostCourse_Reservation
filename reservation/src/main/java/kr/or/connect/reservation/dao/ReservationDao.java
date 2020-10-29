@@ -5,6 +5,7 @@ import static kr.or.connect.reservation.dao.ReservationDaoSqls.SELECT_PRODUCT_PR
 import static kr.or.connect.reservation.dao.ReservationDaoSqls.SELECT_RESERVATION_INFO;
 import static kr.or.connect.reservation.dao.ReservationDaoSqls.UPDATE_RESERVATION_INFO;
 import static kr.or.connect.reservation.dao.ReservationDaoSqls.SELECT_BY_RESERVATION_INFO_ID;
+import static kr.or.connect.reservation.dao.ReservationDaoSqls.SELECT_RESERVATION_INFO_BY_RESERVATION_INFO_ID;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -124,6 +125,16 @@ public class ReservationDao {
 			Map<String,Integer> params = Collections.singletonMap("reservationInfoId", reservationInfoId);
 			return jdbc.queryForObject(SELECT_BY_RESERVATION_INFO_ID, params, reservationResponse_rowMapper);
 		}catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public ReservationInfo getReservationInfo(Integer reservationInfoId) {
+		try {
+			Map<String, Integer> params = Collections.singletonMap("reservationInfoId", reservationInfoId);
+			return jdbc.queryForObject(SELECT_RESERVATION_INFO_BY_RESERVATION_INFO_ID, params, reservationInfo_rowMapper);
+		}catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
 			return null;
 		}

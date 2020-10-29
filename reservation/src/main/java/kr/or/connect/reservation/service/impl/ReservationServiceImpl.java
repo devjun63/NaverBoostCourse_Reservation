@@ -163,7 +163,7 @@ public class ReservationServiceImpl implements ReservationService{
 
 	@Override
 	@Transactional
-	public ReservationResponse cancelReservation(Integer reservationInfoId) {
+	public ReservationResponse apicancelReservation(Integer reservationInfoId) {
 		ReservationResponse reservationResponse = new ReservationResponse();
 		int updateResult = reservationDao.updateReservation(reservationInfoId);
 		System.out.println("업데이트 결과 : "+updateResult);
@@ -175,6 +175,23 @@ public class ReservationServiceImpl implements ReservationService{
 		}
 		return reservationResponse;
 	}
+
+
+
+	@Override
+	public ReservationInfo cancelReservation(Integer reservationInfoId) {
+		ReservationInfo reservationInfo = new ReservationInfo();
+		int updateResult = reservationDao.updateReservation(reservationInfoId);
+		System.out.println("업데이트 결과 : "+updateResult);
+		if(updateResult == 1) {
+			reservationInfo = reservationDao.getReservationInfo(reservationInfoId);
+			reservationInfo.setDisplayInfo(reservationDao.getDisplayInfo(reservationInfo.getDisplayInfoId()));
+		}else {
+			return null;
+		}
+		return reservationInfo;
+	}
+
 
 
 	/*@Override

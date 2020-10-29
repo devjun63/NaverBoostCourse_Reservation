@@ -385,7 +385,7 @@
             	</c:forEach>
             </c:if>
               <!--[D] 예약확정: .confirmed, 취소된 예약&이용완료: .used 추가 card -->
-              <li class="card" style="display: none">
+              <li id="complete" class="card" style="display: none">
                 <div class="link_booking_details">
                   <div class="card_header">
                     <div class="left"></div>
@@ -587,40 +587,31 @@
                             <li class="item">
                               <span class="item_tit">일정</span>
                               <em class="item_dsc">
-                                {createDate }
+                                {createDate}
                                 ~
-                                {reservationDate }
+                                {reservationDate}
                               </em>
                             </li>
                             <li class="item">
                               <span class="item_tit">내역</span>
                               <em class="item_dsc"> 
-                              <c:forEach var="displayInfo" items="{displayInfo}" begin="0" end="0">
+                              
                               		{productContent}
-                              </c:forEach>
+                              
                               </em>
                             </li>
                             <li class="item">
                               <span class="item_tit">장소</span>
                               <em class="item_dsc">
-                              <c:forEach var="displayInfo" items="{displayInfo}" begin="0" end="0">
+                              
                               		{placeName}
-                              </c:forEach>
+                             
                               </em>
                             </li>
                             <li class="item">
                               <span class="item_tit">업체</span>
                               <em class="item_dsc">
-                              	<c:forEach var="displayInfo" items="{displayInfo}" begin="0" end="0">
-                              		<c:choose>
-                              			<c:when test="{homepage}">
-                              				{homepage}
-                              			</c:when>
-                              			<c:otherwise>
-                              				업체명이 없습니다.
-                              			</c:otherwise>
-                              		</c:choose>
-                              </c:forEach>
+                              	{homepage}
                               </em>
                             </li>
                           </ul>
@@ -647,7 +638,14 @@
               
 	</script>
   </body>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script type="text/javascript">
+  moment.lang('ko', {
+	    weekdays: ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"],
+	    weekdaysShort: ["일","월","화","수","목","금","토"],
+	});
+  
+  
   var logoutBtn = document.querySelector(".logout");
   logoutBtn.addEventListener('click', function(evt){
 	  const checkLogout = confirm("로그아웃 하시겠습니까?");
@@ -655,12 +653,14 @@
 		  location.href = "/reservation/logout";
 	  }
   });
-  
+  var reserveCount = document.querySelector(".spr_book2.ico_book_ss").parentNode.children[2];
+  var cancelCount = document.querySelector(".spr_book2.ico_back").parentNode.children[2];
   var cancelBtns = document.querySelectorAll(".booking_cancel");
   let i = 0;
   for(i; i < cancelBtns.length; i++){
 	  cancelBtns[i].addEventListener('click', function(evt){
 		  const checkCancle = confirm("정말로 취소하시겠습니까?");
+		  
 		  var data = {}
 		  let reserveId;
 		  if(checkCancle === true){
@@ -688,8 +688,9 @@
 				  if(xhr.status === 200) {
 					  var resJson = JSON.parse(xhr.responseText);
 				      console.log(resJson);
-				    
 				      drawCancelHtml(resJson);
+				      reserveCount.innerHTML = Number(reserveCount.innerHTML) - 1;
+				      cancelCount.innerHTML = Number(cancelCount.innerHTML) + 1;
 				  } else {
 				    console.log("Error!");
 				  }
@@ -698,25 +699,23 @@
 		  }
 	  });
   }
+  
+ 
+  
   function drawCancelHtml(resJson) {
 		var producthtml = document.getElementById("canceltItem").innerHTML;
-		console.log("프로덕트리스트 길이 : "+resJson.product_list.length);
 		var result = "<li class='card used cancel'>";
-			for(var i=0; i<resJson.product_list.length; i+=2) {
-				
-					result += producthtml.replace("{reservationInfoId}", resJson.product_list[i].displayInfoId)
-					.replace("{createDate}", resJson.product_list[i].productContent)
-					.replace("{reservationDate}", resJson.product_list[i].productContent)
-					.replace("{productContent}", resJson.product_list[i].productDescription)
-					.replace("{placeName}", resJson.product_list[i].placeName)
-					.replace("{homepage}", resJson.product_list[i].productImageUrl)
-					.replace("{totalPrice}", resJson.product_list[i].productImageUrl);
-			}
-			result += "</li>";
-			document.querySelector("footer").insertAdjacentHTML("beforebegin",result);
+		result += producthtml.replace("{reservationInfoId}", resJson.reservationInfoId)
+		.replace("{createDate}", moment(resJson.createDate).format("YYYY.MM.DD.(ddd)"))
+		.replace("{reservationDate}", moment(resJson.reservationDate).format("YYYY.MM.DD.(ddd)"))
+		.replace("{totalPrice}", resJson.totalPrice)
+		.replace("{productContent}", resJson.displayInfo[0].productContent)
+		.replace("{placeName}", resJson.displayInfo[0].placeName)
+		.replace("{homepage}", resJson.displayInfo[0].homepage)
+		result += "</li>";
+			document.querySelector("#complete").insertAdjacentHTML("beforebegin",result);
 		}
   
-	
   </script>
   
 </html>
