@@ -403,11 +403,9 @@
 	var qty = document.querySelectorAll('.qty');
 	for(var i = 0; i <qty.length; i++){
 		var each_qty = qty[i];
-		
 		each_qty.addEventListener('click', function(evt){
 			// 예매 내용의 totalCount 값 변동 & individual_price의 값 변동
 			var target = evt.target;
-			
 			if(target.classList.contains('ico_plus3')){
 				const plus_count = target.previousElementSibling.value;
 				let discount_price_text = target.parentNode.parentNode.parentNode.children[1].children[2].innerText;
@@ -435,7 +433,6 @@
 				let discount_price = discount_price_text.split('원');
 				let price = parseInt(discount_price[0].replace(/[^0-9]/g,''));
 				let tempcount = total_price.innerText;
-				total_price.innerHTML = parseInt(tempcount) - price;
 				
 				
 				if(minus_count != '0'){
@@ -443,7 +440,7 @@
 					target.nextElementSibling.value	 = minus_result;
 					totalCountvalue = parseInt(totalCountvalue) -1;
 					totalCount.innerHTML = totalCountvalue;
-					
+					total_price.innerHTML = parseInt(tempcount) - price;
 					if(minus_result == 0){
 						target.nextElementSibling.classList.add('disabled');
 					}

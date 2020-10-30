@@ -54,11 +54,10 @@ public class ReservationController {
 	public String checkReservation(@RequestBody String reservationEmail) {
 		ReservationInfoResponse reservationInfoResponse = reservationService.getReservationInfo(reservationEmail);
 		Map<String, Object> map = new HashMap<>();
-		if(reservationInfoResponse == null) {
+		if(reservationInfoResponse.getSize() == 0) {
 			map.put("size", 0);
 			return "0";
 		}else {
-			System.out.println(reservationInfoResponse.getReservations().get(0).getReservationName());
 			map.put("size", reservationInfoResponse.getSize());
 			map.put("reservations",reservationInfoResponse.getReservations());
 		}
