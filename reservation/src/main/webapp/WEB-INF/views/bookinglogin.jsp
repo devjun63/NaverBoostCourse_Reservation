@@ -49,10 +49,10 @@
                         <h2 class="login_header_sub border_bottom"> <span translate="CM-NON_MEMBER_BK_CONFIRMATION">비회원 예약확인</span> </h2>
                         <div class="login_form"> 
                            <label class="label_form" for="resrv_id" translate="CM-BOOKING_NUMBER">예약자 이메일 입력</label> 
-                           <input type="email" class="login_input ng-pristine ng-untouched ng-valid ng-empty" id="resrv_id" name="resrv_email" aria-invalid="false" placeholder="crong@naver.com" title="예매자이메일">  
+                           <input type="email" class="login_input ng-pristine ng-untouched ng-valid ng-empty" id="resrv_id" name="reservationEmail" aria-invalid="false" placeholder="crong@naver.com" title="예매자이메일">  
                            <div class="warning_msg">형식에 틀렸거나 너무 짧아요</div>
                            </div>
-                        <button type="button" form="form1" class="login_btn confirm" > <span translate="CM-MY_BOOKING_CHECK">내 예약 확인</span> </button> <!----> <!----> <!----> <!----> 
+                        <button type="sumbit" form="form1" class="login_btn confirm" > <span translate="CM-MY_BOOKING_CHECK">내 예약 확인</span> </button> <!----> <!----> <!----> <!----> 
                      </form>
                   </div>
                   <!----> <!----> 
@@ -113,11 +113,12 @@
        
    </body>
    <script type="text/javascript">
+   var login_form = document.querySelector(".ng-pristine");
+   
        var login_btn = document.querySelector(".login_btn");
        var login_input = document.querySelector(".login_input");
        
        login_input.addEventListener('change', function(evt){
-			
     	   const email_regExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 		   const email_value = evt.target.value;
 		   const warning_msg = evt.target.parentNode.children[2];
@@ -130,11 +131,12 @@
 					}, 1000);
 				}
        });
-       login_btn.addEventListener("click", function(evt){
+       login_form.addEventListener("submit", function(evt){	// form에 submit event로 이벤트를 줘서 기존의 enter로 넘어갔던 상태 해결
     	   const email_regExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
     	   const email_value = login_input.value;
 		   const warning_msg = login_input.parentNode.children[2];
 			console.log(email_value);
+			evt.preventDefault();
 			if(!email_regExp.test(email_value)){
 				evt.target.focus();
 				warning_msg.style.visibility="visible";

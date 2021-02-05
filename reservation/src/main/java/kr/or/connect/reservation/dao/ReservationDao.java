@@ -43,7 +43,6 @@ public class ReservationDao {
 	private RowMapper<ReservationResponse> reservationResponse_rowMapper = BeanPropertyRowMapper.newInstance(ReservationResponse.class);
 	
 	
-	
 	public void setDataSource(DataSource dataSource) {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}

@@ -110,4 +110,10 @@ public class MainPageController {
 		
 		return "bookinglogin";
 	}
+	
+	@GetMapping(path = "/ajaxImage")
+	public String ajaxImage(){
+		
+		return "ajaximagetest";
+	}
 }
