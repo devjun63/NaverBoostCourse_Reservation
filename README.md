@@ -3,8 +3,10 @@
 
 # BE_PJT C 예약: 메인페이지
 
-## 0. Swagger Link
+## 0. Swagger Link & Proejct Link
+
 ** http://125.178.126.8:8080//reservation/swagger-ui.html#/main-page-controller **
+** http://125.178.126.8:8080/reservation/ **
 
 ## 1. 프로젝트 개요
 
