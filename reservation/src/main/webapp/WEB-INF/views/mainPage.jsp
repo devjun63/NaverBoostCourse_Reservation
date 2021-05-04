@@ -263,6 +263,7 @@
 			});
 		}
 		
+		
 		function drawProductHtml(resJson) {
 			var producthtml = document.getElementById("productItem").innerHTML;
 			console.log("프로덕트리스트 길이 : "+resJson.product_list.length);

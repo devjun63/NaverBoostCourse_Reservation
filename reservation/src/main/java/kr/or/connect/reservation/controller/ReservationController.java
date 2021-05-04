@@ -68,7 +68,6 @@ public class ReservationController {
 	public String myreservePage(@RequestParam String reservationEmail, ModelMap model, HttpSession session) {
 		
 		ReservationInfoResponse reservationInfoResponse = reservationService.getReservationInfo(reservationEmail);
-		System.out.println("내 예약 이메일"+reservationEmail);
 		List<ReservationInfo> reservations = new ArrayList<>();
 		List<ReservationInfo> cancelReservations = new ArrayList<>();
 		List<ReservationInfo> completeReservations = new ArrayList<>();

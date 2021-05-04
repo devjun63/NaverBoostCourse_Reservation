@@ -81,7 +81,7 @@ public class ReservationApiController {
 			map.put("morebtn", "morebtn");
 		}
 		return map;
-	} 
+	}
 	@ApiOperation(response=Category.class, value="카테고리 정보")
 	@GetMapping("/categories")
 	@ResponseBody

@@ -279,10 +279,10 @@
                               <span class="unit">원</span>
                             </em>
                           </div>
-                          <div class="booking_cancel">
-                            <a href="./reviewWrite.html"><button class="btn">
-                                <span>예매자 리뷰 남기기</span>
-                              </button></a>
+                          <div class="booking_review" data-reserveid="${completeReservations.reservationInfoId}">
+                            <button class="btn">
+                            <span>예매자 리뷰 남기기</span>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -653,9 +653,12 @@
 		  location.href = "/reservation/logout";
 	  }
   });
+  
   var reserveCount = document.querySelector(".spr_book2.ico_book_ss").parentNode.children[2];
   var cancelCount = document.querySelector(".spr_book2.ico_back").parentNode.children[2];
   var cancelBtns = document.querySelectorAll(".booking_cancel");
+  var reviewBtns = document.querySelectorAll(".booking_review");
+  
   let i = 0;
   for(i; i < cancelBtns.length; i++){
 	  cancelBtns[i].addEventListener('click', function(evt){
@@ -700,7 +703,24 @@
 	  });
   }
   
- 
+  let idx = 0;
+  for(idx; idx < reviewBtns.length; idx++){
+	  reviewBtns[idx].addEventListener('click', function(evt){
+	  var data = {}
+	  let reserveId;
+	  
+	  if( evt.target.tagName === "DIV" ) {
+		  reserveId = evt.target.dataset.reserveid;
+		} else if ( evt.target.tagName === "BUTTON" ) {
+			reserveId = evt.target.parentElement.dataset.reserveid;
+		} else if (evt.target.tagName === "SPAN") {
+			reserveId = evt.target.parentElement.parentElement.dataset.reserveid;
+		}
+	  
+	  location.href = "/reservation/reviewPage/"+reserveId;
+	  });
+  }
+  
   
   function drawCancelHtml(resJson) {
 		var producthtml = document.getElementById("canceltItem").innerHTML;

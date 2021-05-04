@@ -116,4 +116,8 @@ public class MainPageController {
 		
 		return "ajaximagetest";
 	}
+	
+	
+	
+	
 }

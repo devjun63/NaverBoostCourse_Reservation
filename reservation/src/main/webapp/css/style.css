@@ -1384,7 +1384,7 @@ button {
   height: 30px;
   background-color: #fff;
   font-size: 15px;
-  //color: #989898;
+  color: #989898;
   color: #000;
   line-height: 30px;
   -webkit-box-sizing: border-box;
@@ -1401,7 +1401,7 @@ button {
 	width:29%;
 	background-color: #fff;
   font-size: 15px;
-  //color: #989898;
+  color: #989898;
   color: #000;
   line-height: 30px;
   -webkit-box-sizing: border-box;
@@ -3898,6 +3898,14 @@ button {
   height: 36px;
   border: 1px solid #ccc;
   background-color: #f4f4f4;
+}
+
+.booking_review .btn {
+	margin: 20px 0 10px;
+	width: 100%;
+	height: 36px;
+	border: 1px solid #ccc;
+	background-color: #f4f4f4;
 }
 
 /* Page - Confirm */
